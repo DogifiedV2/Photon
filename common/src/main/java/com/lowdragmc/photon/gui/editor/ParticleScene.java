@@ -1,6 +1,5 @@
 package com.lowdragmc.photon.gui.editor;
 
-import com.lowdragmc.lowdraglib.Platform;
 import com.lowdragmc.lowdraglib.client.scene.ParticleManager;
 import com.lowdragmc.lowdraglib.client.scene.WorldSceneRenderer;
 import com.lowdragmc.lowdraglib.client.utils.RenderUtils;
@@ -15,7 +14,6 @@ import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
 import com.lowdragmc.lowdraglib.utils.BlockInfo;
 import com.lowdragmc.lowdraglib.utils.TrackedDummyWorld;
 import com.lowdragmc.lowdraglib.utils.Vector3;
-import com.lowdragmc.photon.Photon;
 import com.lowdragmc.photon.client.PhotonParticleManager;
 import com.lowdragmc.photon.client.emitter.IParticleEmitter;
 import com.mojang.blaze3d.platform.Window;
@@ -56,9 +54,6 @@ public class ParticleScene extends SceneWidget {
         this.editor = editor;
         setRenderFacing(false);
         setRenderSelect(false);
-        if (!Photon.isShaderModInstalled() || Platform.isForge()) {
-            useCacheBuffer();
-        }
         var buttonGroup = initButtons();
         buttonGroup.addSelfPosition((getSize().width - buttonGroup.getSize().width) / 2, 10);
         addWidget(buttonGroup);
@@ -144,7 +139,6 @@ public class ParticleScene extends SceneWidget {
     @Override
     public void renderBlockOverLay(WorldSceneRenderer renderer) {
         hoverSelected = false;
-        renderBox(new PoseStack(), new AABB(0, 0, 0, 0, 0, 0), 0, 0, 0);
         if (editor.isDraggable() && editor.getEmittersList() != null) {
             var selected = editor.getEmittersList().getSelected();
             if (selected != null) {
@@ -226,6 +220,7 @@ public class ParticleScene extends SceneWidget {
     }
 
     public static void renderBox(PoseStack poseStack, AABB aabb, float r, float g, float b) {
+        BufferUploader.reset();
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
