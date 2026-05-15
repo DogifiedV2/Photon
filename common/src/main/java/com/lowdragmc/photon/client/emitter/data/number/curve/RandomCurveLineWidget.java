@@ -381,7 +381,8 @@ public class RandomCurveLineWidget extends WidgetGroup {
             bufferBuilder.vertex(matrix, p0.x, p0.y, 0.0f).color(ColorPattern.T_WHITE.color).endVertex();
         }
 
-        BufferUploader.drawWithShader(bufferBuilder.end());
+        bufferBuilder.end();
+        BufferUploader.end(bufferBuilder);
         RenderSystem.enableTexture();
 
         // render lines

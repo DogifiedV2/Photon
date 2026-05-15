@@ -21,7 +21,7 @@ public class FxLocationArgument extends ResourceLocationArgument {
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
         if (LDLib.isClient()) {
             return SharedSuggestionProvider.suggestResource(
-                    Minecraft.getInstance().getResourceManager().listResources("fx", arg -> arg.getPath().endsWith(".fx")).keySet()
+                    Minecraft.getInstance().getResourceManager().listResources("fx", arg -> arg.endsWith(".fx"))
                             .stream().map(rl -> new ResourceLocation(rl.getNamespace(), rl.getPath().substring(3, rl.getPath().length() - 3))),
                     builder);
         }

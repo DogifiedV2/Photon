@@ -19,7 +19,7 @@ import com.lowdragmc.photon.client.emitter.data.number.curve.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -109,14 +109,14 @@ public class CurvesResource extends Resource<CurvesResource.Curves> {
                 if (curves.isRandomCurve()) {
                     var curveLine = new RandomCurveLineWidget(0, 0, 180, 60, curves.curves0, curves.curves1);
                     curveLine.setGridSize(new Size(6, 2));
-                    curveLine.setHoverTips(coord -> Component.literal("x: %f, y:%f".formatted(coord.x, coord.y)));
+                    curveLine.setHoverTips(coord -> new TextComponent("x: %f, y:%f".formatted(coord.x, coord.y)));
                     curveLine.setBackground(new GuiTextureGroup(ColorPattern.BLACK.rectTexture(), ColorPattern.T_WHITE.borderTexture(-1)));
                     var configurator = new WrapperConfigurator("color", curveLine);
                     father.addConfigurators(configurator);
                 } else {
                     var curveLine = new CurveLineWidget(0, 0, 180, 60, curves.curves0);
                     curveLine.setGridSize(new Size(6, 2));
-                    curveLine.setHoverTips(coord -> Component.literal("x: %f, y:%f".formatted(coord.x, coord.y)));
+                    curveLine.setHoverTips(coord -> new TextComponent("x: %f, y:%f".formatted(coord.x, coord.y)));
                     curveLine.setBackground(new GuiTextureGroup(ColorPattern.BLACK.rectTexture(), ColorPattern.T_WHITE.borderTexture(-1)));
                     var configurator = new WrapperConfigurator("color", curveLine);
                     father.addConfigurators(configurator);

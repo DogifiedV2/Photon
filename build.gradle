@@ -1,7 +1,6 @@
 plugins {
     alias libs.plugins.architectury
     alias libs.plugins.architectury.loom apply false
-    alias libs.plugins.quiltFlower apply false // Quiltflower, a better decompiler
     alias libs.plugins.machete // automatic jar compressing on build
 }
 
@@ -13,7 +12,6 @@ architectury {
 
 subprojects {
     apply plugin: "dev.architectury.loom"
-    apply plugin: "io.github.juuxel.loom-quiltflower"
 
     loom {
         silentMojangMappingsLicense()
@@ -70,7 +68,6 @@ subprojects {
         if (is_root_project) {
             // layered mappings - Mojmap names, parchment and QM docs and parameters
             mappings loom.layered {
-                it.mappings("org.quiltmc:quilt-mappings:${libs.versions.minecraft.get()}+build.${libs.versions.quiltMappings.get()}:intermediary-v2")
                 it.parchment("org.parchmentmc.data:parchment-${libs.versions.minecraft.get()}:${libs.versions.parchment.get()}@zip")
                 it.officialMojangMappings { nameSyntheticMembers = false }
             }
@@ -79,8 +76,8 @@ subprojects {
         // see each subproject for dependencies.
 
         // lombok
-        compileOnly 'org.projectlombok:lombok:1.18.24'
-        annotationProcessor 'org.projectlombok:lombok:1.18.24'
+        compileOnly 'org.projectlombok:lombok:1.18.34'
+        annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
         implementation 'com.google.code.findbugs:jsr305:3.0.2'
     }

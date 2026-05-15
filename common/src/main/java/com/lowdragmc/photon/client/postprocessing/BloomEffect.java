@@ -177,7 +177,8 @@ public class BloomEffect {
         bufferbuilder.vertex(-1, -1, 0).endVertex();
         bufferbuilder.vertex(1, -1, 0).endVertex();
         bufferbuilder.vertex(1, 1, 0).endVertex();
-        BufferUploader.draw(bufferbuilder.end());
+        bufferbuilder.end();
+        BufferUploader.end(bufferbuilder);
         shaderInstance.clear();
     }
 }

@@ -32,7 +32,7 @@ public class Sphere implements IShape {
 
     @Override
     public void nextPosVel(LParticle particle, LParticle emitter, Vector3 position, Vector3 rotation, Vector3 scale) {
-        var random = particle.getRandomSource();
+        var random = particle.getRandom();
         var outer = radius;
         var inner = (1 - radiusThickness) * radius;
         var origin = inner * inner * inner;

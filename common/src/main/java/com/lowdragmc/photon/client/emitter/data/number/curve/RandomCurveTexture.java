@@ -71,7 +71,8 @@ public class RandomCurveTexture extends TransformTexture {
             bufferBuilder.vertex(matrix, p0.x, p0.y, 0.0f).color(ColorPattern.T_RED.color).endVertex();
         }
 
-        BufferUploader.drawWithShader(bufferBuilder.end());
+        bufferBuilder.end();
+        BufferUploader.end(bufferBuilder);
         RenderSystem.enableTexture();
         // render lines
         renderLines(poseStack, curves0, x, y, width, height);

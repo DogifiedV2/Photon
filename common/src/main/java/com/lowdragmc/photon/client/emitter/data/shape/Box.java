@@ -26,7 +26,7 @@ public class Box implements IShape {
 
     @Override
     public void nextPosVel(LParticle particle, LParticle emitter, Vector3 position, Vector3 rotation, Vector3 scale) {
-        var random = particle.getRandomSource();
+        var random = particle.getRandom();
         scale = new Vector3(Math.abs(scale.x), Math.abs(scale.y), Math.abs(scale.z)).multiply(0.5f);
         Vector3 pos = new Vector3(random.nextDouble() * 2 * scale.x - scale.x,
                 random.nextDouble() * 2 * scale.y - scale.y,

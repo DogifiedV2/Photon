@@ -19,7 +19,7 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
+import java.util.Random;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -152,7 +152,7 @@ LParticle extends Particle {
         this.friction = 1;
     }
 
-    public RandomSource getRandomSource() {
+    public Random getRandom() {
         return random;
     }
 
@@ -584,10 +584,10 @@ LParticle extends Particle {
     }
 
     public float getMemRandom(Object object) {
-        return getMemRandom(object, RandomSource::nextFloat);
+        return getMemRandom(object, Random::nextFloat);
     }
 
-    public float getMemRandom(Object object, Function<RandomSource, Float> randomFunc) {
+    public float getMemRandom(Object object, Function<Random, Float> randomFunc) {
         var value = memRandom.get(object);
         if (value == null) return memRandom.computeIfAbsent(object, o -> randomFunc.apply(random));
         return value;

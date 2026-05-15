@@ -7,7 +7,7 @@ import com.lowdragmc.lowdraglib.utils.Size;
 import com.lowdragmc.photon.client.emitter.data.number.NumberFunctionConfig;
 import com.lowdragmc.photon.client.emitter.data.number.RandomConstant;
 import com.lowdragmc.photon.gui.editor.configurator.NumberFunctionConfigurator;
-import net.minecraft.util.RandomSource;
+import java.util.Random;
 
 import java.util.function.Supplier;
 
@@ -38,14 +38,14 @@ public class RandomColor extends RandomConstant {
         return ColorUtils.blendColor(colorA, colorB, lerp.get());
     }
 
-    private int randomColor(RandomSource randomSource, int minA, int maxA, int minR, int maxR, int minG, int maxG, int minB, int maxB) {
+    private int randomColor(Random randomSource, int minA, int maxA, int minR, int maxR, int minG, int maxG, int minB, int maxB) {
         return  ((minR + randomSource.nextInt(maxA + 1 - minA)) << 24) |
                 ((minR + randomSource.nextInt(maxR + 1 - minR)) << 16) |
                 ((minG + randomSource.nextInt(maxG + 1 - minG)) << 8) |
                 ((minB + randomSource.nextInt(maxB + 1 - minB))) ;
     }
 
-    private int randomColor(RandomSource randomSource, int colorA, int colorB) {
+    private int randomColor(Random randomSource, int colorA, int colorB) {
         return randomColor(randomSource, Math.min(alphaI(colorA), alphaI(colorB)), Math.max(alphaI(colorA), alphaI(colorB)),
                 Math.min(redI(colorA), redI(colorB)), Math.max(redI(colorA), redI(colorB)),
                 Math.min(greenI(colorA), greenI(colorB)), Math.max(greenI(colorA), greenI(colorB)),

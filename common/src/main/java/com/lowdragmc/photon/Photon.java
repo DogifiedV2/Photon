@@ -4,7 +4,6 @@ import com.lowdragmc.lowdraglib.LDLib;
 import com.lowdragmc.lowdraglib.Platform;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.irisshaders.iris.api.v0.IrisApi;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +37,13 @@ public class Photon {
 
     public static boolean isUsingShaderPack() {
         if (isShaderModInstalled()) {
-            return IrisApi.getInstance().isShaderPackInUse();
+            try {
+                Class<?> irisApiClass = Class.forName("net.irisshaders.iris.api.v0.IrisApi");
+                Object irisApi = irisApiClass.getMethod("getInstance").invoke(null);
+                return (boolean) irisApiClass.getMethod("isShaderPackInUse").invoke(irisApi);
+            } catch (ReflectiveOperationException exception) {
+                return false;
+            }
         }
         return false;
     }

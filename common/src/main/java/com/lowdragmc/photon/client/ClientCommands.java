@@ -9,7 +9,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class ClientCommands {
                         .then(createLiteral("clear_client_fx_cache")
                                 .executes(context -> {
                                     if (Minecraft.getInstance().player != null) {
-                                        Minecraft.getInstance().player.sendSystemMessage(Component.literal("clear client cache fx: " + FXHelper.clearCache()));
+                                        Minecraft.getInstance().player.displayClientMessage(new TextComponent("clear client cache fx: " + FXHelper.clearCache()), false);
                                     } else {
                                         FXHelper.clearCache();
                                     }

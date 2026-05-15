@@ -43,7 +43,7 @@ public class Mesh implements IShape {
     @Override
     public void nextPosVel(LParticle particle, LParticle emitter, Vector3 position, Vector3 rotation, Vector3 scale) {
         Vector3 pos = null;
-        var random = particle.getRandomSource();
+        var random = particle.getRandom();
         var t = random.nextFloat();
         if (type == Type.Vertex) {
             pos = meshData.getRandomVertex(t);

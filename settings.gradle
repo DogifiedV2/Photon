@@ -14,7 +14,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         // Minecraft Version
-        def minecraftVersion = "1.19.2"
+        def minecraftVersion = "1.18.2"
 
         // Mod Dependencies Versions
         // Common
@@ -31,20 +31,20 @@ dependencyResolutionManagement {
         def irisVersion = "1.6.4+1.19.2"
 
         // Forge
-        def forgeVersion = "43.2.0"
+        def forgeVersion = "40.3.11"
         def topForgeVersion = "1.19-6.2.0-6"
-        def rubidiumVersion = "0.6.2b"
+        def rubidiumVersion = "0.5.6"
         def oculusVersion = "1.19.2-1.2.8a"
 
         // Libs
         def quiltMappingsVersion = "21"  // https://lambdaurora.dev/tools/import_quilt.html
-        def parchmentVersion = "2022.11.27" // https://parchmentmc.org/docs/getting-started
+        def parchmentVersion = "2022.11.06" // https://parchmentmc.org/docs/getting-started
         def shadowVersion = "7.1.2"
         def architecturyPluginVersion = "3.4-SNAPSHOT"
-        def architecturyLoomVersion = "1.0-SNAPSHOT"
+        def architecturyLoomVersion = "1.6-SNAPSHOT"
         def quiltFlowerVersion = "1.+"
         def macheteVersion = "1.+"
-        def ldLibVersion = "1.0.21.a"
+        def ldLibVersion = "1.0.25.o"
 
         fabric {
             def parchment = version("parchment", parchmentVersion)
@@ -142,11 +142,9 @@ dependencyResolutionManagement {
 }
 
 include("${mod_id}-common")
-include("${mod_id}-fabric")
 include("${mod_id}-forge")
 
 project(":${mod_id}-common").setProjectDir(new File("common"))
 project(":${mod_id}-forge").setProjectDir(new File("forge"))
-project(":${mod_id}-fabric").setProjectDir(new File("fabric"))
 
 rootProject.name = "${mod_name}"

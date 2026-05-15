@@ -24,7 +24,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.util.RandomSource;
+import java.util.Random;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class EmissionSetting implements IConfigurable, ITagSerializable<Compound
         }
     }
 
-    public int getEmissionCount(int emitterAge, float t, RandomSource randomSource) {
+    public int getEmissionCount(int emitterAge, float t, Random randomSource) {
         var result = emissionRate.get(randomSource, t);
         var number = result.intValue();
         var decimals = result.floatValue() - result.intValue();

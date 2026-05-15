@@ -2,7 +2,7 @@ package com.lowdragmc.photon.client.emitter.data.number;
 
 import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
 import com.lowdragmc.lowdraglib.utils.Vector3;
-import net.minecraft.util.RandomSource;
+import java.util.Random;
 
 import java.util.function.Supplier;
 
@@ -28,7 +28,7 @@ public class NumberFunction3 {
         this.z = NumberFunction.constant(z);
     }
 
-    public Vector3 get(RandomSource randomSource, float t) {
+    public Vector3 get(Random randomSource, float t) {
         return new Vector3(x.get(randomSource, t).doubleValue(), y.get(randomSource, t).doubleValue(), z.get(randomSource, t).doubleValue());
     }
 

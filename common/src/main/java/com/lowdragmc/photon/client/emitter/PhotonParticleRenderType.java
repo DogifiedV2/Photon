@@ -87,7 +87,8 @@ public abstract class PhotonParticleRenderType implements ParticleRenderType {
             bufferbuilder.vertex(-1, -1, 0).endVertex();
             bufferbuilder.vertex(1, -1, 0).endVertex();
             bufferbuilder.vertex(1, 1, 0).endVertex();
-            BufferUploader.draw(bufferbuilder.end());
+            bufferbuilder.end();
+            BufferUploader.end(bufferbuilder);
             Shaders.getBlitShader().clear();
 
             GlStateManager._depthMask(true);
@@ -168,7 +169,8 @@ public abstract class PhotonParticleRenderType implements ParticleRenderType {
      * upload the buffer builder. In the render thread
      */
     public void end(BufferBuilder builder) {
-        BufferUploader.drawWithShader(builder.end());
+        builder.end();
+        BufferUploader.end(builder);
     }
 
     /**

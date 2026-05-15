@@ -18,8 +18,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.util.RandomSource;
+import net.minecraft.network.chat.TextComponent;
+import java.util.Random;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -71,7 +71,7 @@ public class Curve implements NumberFunction {
     }
 
     @Override
-    public Number get(RandomSource randomSource, float t) {
+    public Number get(Random randomSource, float t) {
         return lower + (upper - lower) * curves.getCurveY(t);
     }
 
@@ -153,7 +153,7 @@ public class Curve implements NumberFunction {
             curveLine.setOnUpdate(onUpdate);
             curveLine.setLockControlPoint(lockControlPoint);
             curveLine.setGridSize(new Size(6, 2));
-            curveLine.setHoverTips(coord -> Component.literal(String.valueOf(Curve.this.lower + coord.y * (Curve.this.upper - Curve.this.lower))));
+            curveLine.setHoverTips(coord -> new TextComponent(String.valueOf(Curve.this.lower + coord.y * (Curve.this.upper - Curve.this.lower))));
             curveLine.setBackground(new GuiTextureGroup(ColorPattern.BLACK.rectTexture(), ColorPattern.T_WHITE.borderTexture(-1)));
 
             // axis

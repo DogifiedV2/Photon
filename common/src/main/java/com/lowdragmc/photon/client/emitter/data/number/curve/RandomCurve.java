@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -163,7 +163,7 @@ public class RandomCurve implements NumberFunction {
             curveLine.setOnUpdate(onUpdate);
             curveLine.setLockControlPoint(lockControlPoint);
             curveLine.setGridSize(new Size(6, 2));
-            curveLine.setHoverTips(coord -> Component.literal(String.valueOf(RandomCurve.this.lower + coord.y * (RandomCurve.this.upper - RandomCurve.this.lower))));
+            curveLine.setHoverTips(coord -> new TextComponent(String.valueOf(RandomCurve.this.lower + coord.y * (RandomCurve.this.upper - RandomCurve.this.lower))));
             curveLine.setBackground(new GuiTextureGroup(ColorPattern.BLACK.rectTexture(), ColorPattern.T_WHITE.borderTexture(-1)));
             addWidget(curveLine);
 

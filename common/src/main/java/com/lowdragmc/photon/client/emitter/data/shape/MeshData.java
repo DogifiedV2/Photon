@@ -23,7 +23,7 @@ import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
+import java.util.Random;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -63,7 +63,7 @@ public class MeshData implements ITagSerializable<CompoundTag>, IConfigurable {
     }
 
     public void loadFromModel(ResourceLocation modelLocation) {
-        var random = RandomSource.create();
+        var random = new Random();
         var bakedModel = ModelFactory.getUnBakedModel(modelLocation).bake(
                 ModelFactory.getModeBakery(),
                 Material::sprite,

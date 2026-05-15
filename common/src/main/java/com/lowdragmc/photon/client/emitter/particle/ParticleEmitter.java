@@ -118,7 +118,7 @@ public class ParticleEmitter extends LParticle implements IParticleEmitter {
     //*****     particle logic     *****//
     //////////////////////////////////////
     protected LParticle createNewParticle() {
-        var randomSource= getRandomSource();
+        var randomSource= getRandom();
         var particle = new Basic(level, 0, 0, 0, renderType);
         particle.setLevel(getLevel());
         // start value
@@ -334,7 +334,7 @@ public class ParticleEmitter extends LParticle implements IParticleEmitter {
 
         // emit new particle
         if (!isRemoved() && getParticleAmount() < config.maxParticles) {
-            var number = config.emission.getEmissionCount(this.age, t, getRandomSource());
+            var number = config.emission.getEmissionCount(this.age, t, getRandom());
             for (int i = 0; i < number; i++) {
                 if (!emitParticle(createNewParticle())) {
                     break;

@@ -89,11 +89,11 @@ public class Function implements IShape {
     private void prepareExpr(LParticle emitter) {
         T.setValue(emitter.getT());
 
-        randomA.setValue(emitter.getRandomSource().nextFloat());
-        randomB.setValue(emitter.getRandomSource().nextFloat());
-        randomC.setValue(emitter.getRandomSource().nextFloat());
-        randomD.setValue(emitter.getRandomSource().nextFloat());
-        randomE.setValue(emitter.getRandomSource().nextFloat());
+        randomA.setValue(emitter.getRandom().nextFloat());
+        randomB.setValue(emitter.getRandom().nextFloat());
+        randomC.setValue(emitter.getRandom().nextFloat());
+        randomD.setValue(emitter.getRandom().nextFloat());
+        randomE.setValue(emitter.getRandom().nextFloat());
 
         if (xCache == null || !x.equals(xCache.getInput())) {
             try {

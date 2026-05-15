@@ -167,7 +167,7 @@ public class SubEmittersSetting extends ToggleGroup implements IConfigurable, IT
         @Nullable
         public IParticleEmitter spawnEmitter(LParticle father, @Nonnull IEffect effect) {
             if (cache == null) cache = effect.getEmitterByName(emitter);
-            if (cache != null && father.getAge() % tickInterval == 0 && father.getRandomSource().nextFloat() < emitProbability.get(father.getT(0), () -> father.getMemRandom("sub_emitter_probability")).floatValue()) {
+            if (cache != null && father.getAge() % tickInterval == 0 && father.getRandom().nextFloat() < emitProbability.get(father.getT(0), () -> father.getMemRandom("sub_emitter_probability")).floatValue()) {
                 var copied = cache.copy();
                 copied.reset();
                 copied.updatePos(father.getPos());

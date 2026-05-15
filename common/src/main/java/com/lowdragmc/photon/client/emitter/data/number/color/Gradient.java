@@ -15,7 +15,7 @@ import com.lowdragmc.photon.gui.editor.GradientsResource;
 import com.lowdragmc.photon.gui.editor.configurator.NumberFunctionConfigurator;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.RandomSource;
+import java.util.Random;
 
 import java.util.function.Supplier;
 
@@ -42,7 +42,7 @@ public class Gradient implements NumberFunction {
     }
 
     @Override
-    public Number get(RandomSource randomSource, float t) {
+    public Number get(Random randomSource, float t) {
         return gradientColor.getColor(t);
     }
 

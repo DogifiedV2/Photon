@@ -11,7 +11,7 @@ import com.lowdragmc.photon.client.emitter.data.number.curve.RandomCurve;
 import com.lowdragmc.photon.gui.editor.configurator.NumberFunctionConfigurator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.util.RandomSource;
+import java.util.Random;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +62,7 @@ public interface NumberFunction extends ITagSerializable<CompoundTag> {
 
     void createConfigurator(WidgetGroup group, NumberFunctionConfigurator configurator);
 
-    default Number get(RandomSource randomSource, float t) {
+    default Number get(Random randomSource, float t) {
         return get(t, randomSource::nextFloat);
     }
 

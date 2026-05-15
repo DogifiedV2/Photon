@@ -37,7 +37,7 @@ public class FXHelper {
     public static FX getFX(ResourceLocation fxLocation) {
         return CACHE.computeIfAbsent(fxLocation, location -> {
             ResourceLocation resourceLocation = new ResourceLocation(fxLocation.getNamespace(), FX_PATH + fxLocation.getPath() + ".fx");
-            try (var inputStream = Minecraft.getInstance().getResourceManager().open(resourceLocation);) {
+            try (var inputStream = Minecraft.getInstance().getResourceManager().getResource(resourceLocation).getInputStream()) {
                 var tag = NbtIo.readCompressed(inputStream);
                 return new FX(fxLocation, getEmitters(tag), tag);
             } catch (Exception ignored) {

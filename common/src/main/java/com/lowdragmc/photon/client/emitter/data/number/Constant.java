@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.util.RandomSource;
+import java.util.Random;
 
 import java.util.function.Supplier;
 
@@ -35,7 +35,7 @@ public class Constant implements NumberFunction {
     }
 
     @Override
-    public Number get(RandomSource randomSource, float t) {
+    public Number get(Random randomSource, float t) {
         return number;
     }
 

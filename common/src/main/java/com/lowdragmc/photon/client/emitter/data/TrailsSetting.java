@@ -108,7 +108,7 @@ public class TrailsSetting extends ToggleGroup {
     }
 
     public void setup(ParticleEmitter emitter, LParticle particle) {
-        var random = emitter.getRandomSource();
+        var random = emitter.getRandom();
         if (random.nextFloat() < ratio) { // has tail
             var pos = particle.getPos();
             var trail = new TrailParticle.Basic(emitter.getClientLevel(), pos.x, pos.y, pos.z, renderType);
