@@ -2,7 +2,6 @@ package com.lowdragmc.photon.client.gameobject.emitter;
 
 import com.lowdragmc.lowdraglib.client.shader.Shaders;
 import com.lowdragmc.lowdraglib.utils.PositionedRect;
-import com.lowdragmc.photon.IrisFramebufferUtils;
 import com.lowdragmc.photon.Photon;
 import com.lowdragmc.photon.client.gameobject.emitter.data.RendererSetting;
 import com.lowdragmc.photon.client.postprocessing.BloomEffect;
@@ -18,10 +17,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.world.phys.AABB;
-import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -47,7 +43,7 @@ public abstract class PhotonParticleRenderType implements ParticleRenderType {
     public static boolean bloomMark = false;
 
     public static void renderBloom() {
-        if (bloomMark) {
+        if (LAYER == RendererSetting.Layer.Translucent && bloomMark && !Photon.isUsingShaderPack()) {
             // setup view port
             var lastViewport = new PositionedRect(GlStateManager.Viewport.x(), GlStateManager.Viewport.y(), GlStateManager.Viewport.width(), GlStateManager.Viewport.height());
             var input = BloomEffect.getInput();
@@ -60,26 +56,22 @@ public abstract class PhotonParticleRenderType implements ParticleRenderType {
                 RenderSystem.viewport(0, 0, background.width, background.height);
             }
 
-            // render bloom effect
-            BloomEffect.renderBloom(
-                    LAYER == RendererSetting.Layer.Opaque ? Photon.getSolidTextureID() : Photon.getTranslucentTextureID(true),
-                    input.getColorTextureId(),
-                    output);
+            // Render/exported in-world FX through the proven 1.18 path: particles draw to a single
+            // highlight target, then the highlight and blur are composited back onto the main target.
+            BloomEffect.renderBloom(background.getColorTextureId(), input.getColorTextureId(), output);
 
             // clean input
             input.bindWrite(false);
-            // only clear bloom color attachment
-            GL20.glDrawBuffers(new int[]{GL30.GL_COLOR_ATTACHMENT1});
             GlStateManager._clearColor(0.0f, 0.0f, 0.0f, 0.0f);
             int i = GL11.GL_COLOR_BUFFER_BIT;
             GlStateManager._clear(i, Minecraft.ON_OSX);
-            GL20.glDrawBuffers(new int[]{GL30.GL_COLOR_ATTACHMENT0, GL30.GL_COLOR_ATTACHMENT1});
+
             // draw effect back to main target
             GlStateManager._colorMask(true, true, true, true);
             GlStateManager._disableDepthTest();
             GlStateManager._depthMask(false);
 
-            GlStateManager._glBindFramebuffer(36160, LAYER == RendererSetting.Layer.Opaque ? Photon.getSolidFrameBufferID() : Photon.getTranslucentFrameBufferID());
+            background.bindWrite(false);
 
             Shaders.getBlitShader().setSampler("DiffuseSampler", output.getColorTextureId());
 
@@ -119,32 +111,33 @@ public abstract class PhotonParticleRenderType implements ParticleRenderType {
     }
 
     public static void finishRender() {
-        // render after opaque objects with depth test enabled, otherwise apply bloom effect in front of entities.
-        if (LAYER == RendererSetting.Layer.Opaque || IrisFramebufferUtils.isRenderingGUIScreen()) {
-            renderBloom();
-        }
-
+        renderBloom();
         if (LAYER == RendererSetting.Layer.Opaque) {
             LAYER = RendererSetting.Layer.Translucent;
         }
     }
 
     /**
-     * apply bloom shader
+     * Route bloom-enabled particles through the 1.18 highlight target. The 1.20 MRT particle
+     * shader path is not reliable on this 1.18 Forge framebuffer stack.
      */
     public void beginBloom() {
-        BloomEffect.bindBloomShader();
-        bloomMark = true;
+        if (!Photon.isUsingShaderPack()) {
+            var input = BloomEffect.getInput();
+            input.bindWrite(false);
+            bloomMark = true;
+        }
     }
 
     /**
-     * reset render target and bloom color
+     * reset render target
      */
     public void endParticle() {
-        BloomEffect.setBloomColor(new Vector4f(0.0f));
         BloomEffect.endBloomRendering();
-        var background = Minecraft.getInstance().getMainRenderTarget();
-        background.bindWrite(false);
+        if (!Photon.isUsingShaderPack()) {
+            var background = Minecraft.getInstance().getMainRenderTarget();
+            background.bindWrite(false);
+        }
     }
 
     public boolean isParallel() {

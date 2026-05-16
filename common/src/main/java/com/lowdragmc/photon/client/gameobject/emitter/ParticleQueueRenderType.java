@@ -1,5 +1,6 @@
 package com.lowdragmc.photon.client.gameobject.emitter;
 
+import com.lowdragmc.photon.Photon;
 import com.lowdragmc.photon.client.gameobject.particle.IParticle;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -63,6 +64,10 @@ public class ParticleQueueRenderType extends PhotonParticleRenderType {
             if (!list.isEmpty()) {
                 RenderSystem.setShader(GameRenderer::getParticleShader);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                if (Boolean.getBoolean("photon.debugRenderQueue")) {
+                    Photon.LOGGER.info("Photon render queue flushing type={} particles={} camera={} partial={}",
+                            type.getClass().getName(), list.size(), camera == null ? null : camera.getPosition(), pPartialTicks);
+                }
                 type.prepareStatus();
 
                 if (type.isParallel()) {
