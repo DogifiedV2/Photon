@@ -7,10 +7,11 @@
   "client": [
     "ParticleEngineMixin",
     "LevelRendererMixin",
-    "no_iris.ParticleEngineMixin"
+    "no_iris.ParticleEngineMixin",
+    "compat.rubidium.ParticleEngineMixin",
+    "compat.rubidium.SodiumWorldRendererMixin"
   ],
-  "mixins": [
-  ],
+  "mixins": [],
   "injectors": {
     "defaultRequire": 1
   }

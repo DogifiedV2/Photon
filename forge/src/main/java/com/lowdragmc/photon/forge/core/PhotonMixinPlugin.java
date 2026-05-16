@@ -16,6 +16,7 @@ import java.util.Set;
 public class PhotonMixinPlugin implements IMixinConfigPlugin, MixinPluginShared {
 
     boolean IS_IRIS_LOAD = MixinPluginShared.isClassFound("net.irisshaders.iris.api.v0.IrisApi");
+    boolean IS_RUBIDIUM_LOAD = MixinPluginShared.isClassFound("me.jellysquid.mods.sodium.mixin.SodiumMixinPlugin");
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -31,6 +32,9 @@ public class PhotonMixinPlugin implements IMixinConfigPlugin, MixinPluginShared 
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if (mixinClassName.contains("com.lowdragmc.photon.forge.core.mixins.no_iris")) {
             return !IS_IRIS_LOAD;
+        }
+        if (mixinClassName.contains("com.lowdragmc.photon.forge.core.mixins.compat.rubidium")) {
+            return IS_RUBIDIUM_LOAD;
         }
         return true;
     }
