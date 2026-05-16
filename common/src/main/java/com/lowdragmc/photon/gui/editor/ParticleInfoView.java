@@ -39,11 +39,10 @@ public class ParticleInfoView extends FloatViewWidget {
     @Override
     public void initWidget() {
         super.initWidget();
-        title.setBackground(new GuiTextureGroup(new ColorRectTexture(0xee8f1326).setTopRadius(5f), ColorPattern.LIGHT_GRAY.borderTexture(-1).setTopRadius(5f)));
-        content.setBackground(new GuiTextureGroup(new ColorRectTexture(0xf015181b).setBottomRadius(5f), ColorPattern.LIGHT_GRAY.borderTexture(-1).setBottomRadius(5f)));
+        title.setBackground(new GuiTextureGroup(new ColorRectTexture(0xff8f1326).setTopRadius(5f), ColorPattern.LIGHT_GRAY.borderTexture(-1).setTopRadius(5f)));
+        content.setBackground(new GuiTextureGroup(new ColorRectTexture(0xff15181b).setBottomRadius(5f), ColorPattern.LIGHT_GRAY.borderTexture(-1).setBottomRadius(5f)));
         // actions
-        addButton("photon.gui.editor.particle_info.restart", () -> getEditor().restartScene());
-        addToggle("photon.gui.editor.particle_info.pause", () -> getEditor().isPaused(), paused -> getEditor().setPaused(paused));
+        addActionButtons();
         // particles
         addInformation("photon.gui.editor.particle_info.particles", () -> {
             var list = getEditor().getEmittersList();
@@ -105,6 +104,26 @@ public class ParticleInfoView extends FloatViewWidget {
                 .setHoverTexture(new GuiTextureGroup(ColorPattern.GRAY.rectTexture().setRadius(5), new TextTexture(title).setWidth(194))));
     }
 
+    protected void addActionButtons() {
+        var offsetY = content.widgets.size() * 15;
+        var group = new WidgetGroup(3, offsetY + 3, 194, 12);
+        group.addWidget(new ButtonWidget(0, 0, 95, 12,
+                new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(4), ColorPattern.LIGHT_GRAY.borderTexture(1).setRadius(4),
+                        new TextTexture("photon.gui.editor.particle_info.restart").setWidth(95).setDropShadow(false)), cd -> getEditor().restartScene())
+                .setHoverTexture(new GuiTextureGroup(ColorPattern.GRAY.rectTexture().setRadius(4), ColorPattern.WHITE.borderTexture(1).setRadius(4),
+                        new TextTexture("photon.gui.editor.particle_info.restart").setWidth(95).setDropShadow(false))));
+        group.addWidget(new ButtonWidget(99, 0, 95, 12,
+                new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(4), ColorPattern.LIGHT_GRAY.borderTexture(1).setRadius(4),
+                        new TextTexture().setSupplier(() -> LocalizationUtils.format(getEditor().isPaused() ?
+                                "photon.gui.editor.particle_info.play" :
+                                "photon.gui.editor.particle_info.pause")).setWidth(95).setDropShadow(false)), cd -> getEditor().setPaused(!getEditor().isPaused()))
+                .setHoverTexture(new GuiTextureGroup(ColorPattern.GRAY.rectTexture().setRadius(4), ColorPattern.WHITE.borderTexture(1).setRadius(4),
+                        new TextTexture().setSupplier(() -> LocalizationUtils.format(getEditor().isPaused() ?
+                                "photon.gui.editor.particle_info.play" :
+                                "photon.gui.editor.particle_info.pause")).setWidth(95).setDropShadow(false))));
+        content.addWidget(group);
+    }
+
     protected WidgetGroup addToggle(String title, BooleanSupplier supplier, BooleanConsumer onClick) {
         var offsetY = content.widgets.size() * 15;
         var infoGroup = new WidgetGroup(3, offsetY + 3, 194, 10);
@@ -114,10 +133,10 @@ public class ParticleInfoView extends FloatViewWidget {
         var textWidth = Minecraft.getInstance().font.width(LocalizationUtils.format(title)) + 6;
         infoGroup.addWidget(new SwitchWidget(textWidth, -1, 12, 12, (cd, pressed) -> onClick.accept(pressed.booleanValue()))
                 .setSupplier(supplier::getAsBoolean).setPressed(supplier.getAsBoolean())
-                .setTexture(new GuiTextureGroup(ColorPattern.PANEL_DARK.rectTexture().setRadius(2), ColorPattern.LIGHT_GRAY.borderTexture(1).setRadius(2)),
-                        new GuiTextureGroup(ColorPattern.PANEL_DARK.rectTexture().setRadius(2), ColorPattern.GREEN.borderTexture(1).setRadius(2),
-                                new TextTexture("✓", ColorPattern.GREEN.color).setWidth(12).setDropShadow(false)))
-                .setHoverTexture(new GuiTextureGroup(ColorPattern.PANEL_HOVER.rectTexture().setRadius(2), ColorPattern.WHITE.borderTexture(1).setRadius(2))));
+                .setTexture(new GuiTextureGroup(new ColorRectTexture(0xff2f3439).setRadius(2), new ColorBorderTexture(-1, ColorPattern.LIGHT_GRAY.color).setRadius(2)),
+                        new GuiTextureGroup(new ColorRectTexture(0xff2f3439).setRadius(2), new ColorBorderTexture(-1, ColorPattern.GREEN.color).setRadius(2),
+                                Icons.CHECK.copy().setColor(ColorPattern.GREEN.color)))
+                .setHoverTexture(new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(2), new ColorBorderTexture(-1, ColorPattern.WHITE.color).setRadius(2))));
         content.addWidget(infoGroup);
         return infoGroup;
     }

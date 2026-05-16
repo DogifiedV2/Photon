@@ -1,10 +1,12 @@
 package com.lowdragmc.photon.client.emitter.data;
 
 import com.lowdragmc.lowdraglib.gui.editor.ColorPattern;
+import com.lowdragmc.lowdraglib.gui.editor.Icons;
 import com.lowdragmc.lowdraglib.gui.editor.configurator.ConfiguratorGroup;
 import com.lowdragmc.lowdraglib.gui.editor.configurator.IConfigurable;
+import com.lowdragmc.lowdraglib.gui.texture.ColorBorderTexture;
+import com.lowdragmc.lowdraglib.gui.texture.ColorRectTexture;
 import com.lowdragmc.lowdraglib.gui.texture.GuiTextureGroup;
-import com.lowdragmc.lowdraglib.gui.texture.TextTexture;
 import com.lowdragmc.lowdraglib.gui.widget.SwitchWidget;
 import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
 import lombok.Getter;
@@ -56,10 +58,10 @@ public class ToggleGroup implements IConfigurable {
             }
         })
                 .setPressed(enable)
-                .setTexture(new GuiTextureGroup(ColorPattern.PANEL_DARK.rectTexture().setRadius(2), ColorPattern.LIGHT_GRAY.borderTexture(1).setRadius(2)),
-                        new GuiTextureGroup(ColorPattern.PANEL_DARK.rectTexture().setRadius(2), ColorPattern.GREEN.borderTexture(1).setRadius(2),
-                                new TextTexture("✓", ColorPattern.GREEN.color).setWidth(12).setDropShadow(false)))
-                .setHoverTexture(new GuiTextureGroup(ColorPattern.PANEL_HOVER.rectTexture().setRadius(2), ColorPattern.WHITE.borderTexture(1).setRadius(2)))
+                .setTexture(new GuiTextureGroup(new ColorRectTexture(0xff2f3439).setRadius(2), new ColorBorderTexture(-1, ColorPattern.LIGHT_GRAY.color).setRadius(2)),
+                        new GuiTextureGroup(new ColorRectTexture(0xff2f3439).setRadius(2), new ColorBorderTexture(-1, ColorPattern.GREEN.color).setRadius(2),
+                                Icons.CHECK.copy().setColor(ColorPattern.GREEN.color)))
+                .setHoverTexture(new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(2), new ColorBorderTexture(-1, ColorPattern.WHITE.color).setRadius(2)))
                 .setHoverTooltips("enable/disable"));
     }
 
