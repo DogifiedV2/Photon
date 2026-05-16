@@ -1,6 +1,7 @@
 package com.lowdragmc.photon.client;
 
 import com.lowdragmc.lowdraglib.LDLib;
+import com.lowdragmc.photon.Photon;
 import com.lowdragmc.lowdraglib.gui.modular.IUIHolder;
 import com.lowdragmc.lowdraglib.gui.modular.ModularUI;
 import com.lowdragmc.lowdraglib.gui.modular.ModularUIGuiContainer;
@@ -15,7 +16,6 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 
 import java.util.List;
@@ -34,13 +34,36 @@ public class ClientCommands {
     public static <S> List<LiteralArgumentBuilder<S>> createClientCommands() {
         return List.of(
                 (LiteralArgumentBuilder<S>) createLiteral("photon_editor").executes(context -> {
+                    Photon.LOGGER.info("/photon_editor command executed; scheduling editor screen open");
                     var minecraft = Minecraft.getInstance();
                     var entityPlayer = minecraft.player;
-                    var modular = new ModularUI(IUIHolder.EMPTY, entityPlayer).widget(new FXEditor(LDLib.getLDLibDir()));
-                    modular.initWidgets();
-                    ModularUIGuiContainer ModularUIGuiContainer = new ModularUIGuiContainer(modular, entityPlayer.containerMenu.containerId);
-                    minecraft.setScreen(ModularUIGuiContainer);
-                    entityPlayer.containerMenu = ModularUIGuiContainer.getMenu();
+                    if (entityPlayer != null) {
+                        entityPlayer.displayClientMessage(new TextComponent("Photon editor command executed; opening editor..."), false);
+                    } else {
+                        Photon.LOGGER.warn("/photon_editor command executed before a local player was available");
+                    }
+                    minecraft.submit(() -> {
+                        try {
+                            var player = minecraft.player;
+                            if (player == null) {
+                                Photon.LOGGER.warn("Cannot open Photon editor: local player is null on scheduled client task");
+                                return;
+                            }
+                            Photon.LOGGER.info("Opening Photon editor screen. workspace={}", LDLib.getLDLibDir().getAbsolutePath());
+                            var modular = new ModularUI(IUIHolder.EMPTY, player).widget(new FXEditor(LDLib.getLDLibDir()));
+                            modular.initWidgets();
+                            ModularUIGuiContainer gui = new ModularUIGuiContainer(modular, player.containerMenu.containerId);
+                            minecraft.setScreen(gui);
+                            player.containerMenu = gui.getMenu();
+                            player.displayClientMessage(new TextComponent("Photon editor screen opened"), false);
+                            Photon.LOGGER.info("Photon editor screen opened: {}", gui.getClass().getName());
+                        } catch (Throwable throwable) {
+                            Photon.LOGGER.error("Failed to open Photon editor screen", throwable);
+                            if (minecraft.player != null) {
+                                minecraft.player.displayClientMessage(new TextComponent("Photon editor failed to open: " + throwable.getClass().getSimpleName() + ": " + throwable.getMessage()), false);
+                            }
+                        }
+                    });
                     return 1;
                 }),
                 (LiteralArgumentBuilder<S>) createLiteral("photon_client")

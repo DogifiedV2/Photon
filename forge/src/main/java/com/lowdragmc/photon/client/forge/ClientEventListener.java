@@ -23,9 +23,13 @@ public class ClientEventListener {
 
     @SubscribeEvent
     public static void onRegisterClientCommands(RegisterClientCommandsEvent event) {
+        Photon.LOGGER.info("Registering Photon client commands");
         var dispatcher = event.getDispatcher();
         List<LiteralArgumentBuilder<CommandSourceStack>> commands = ClientCommands.createClientCommands();
-        commands.forEach(dispatcher::register);
+        commands.forEach(command -> {
+            Photon.LOGGER.info("Registering Photon client command: /{}", command.getLiteral());
+            dispatcher.register(command);
+        });
     }
 
 }
