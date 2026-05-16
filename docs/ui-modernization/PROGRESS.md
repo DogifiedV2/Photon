@@ -2,7 +2,7 @@
 
 ## Current status
 
-Phase 4 input/hitbox correctness is complete in LDLib-MultiLoader. Next work is Phase 5: scrolling/clipping containment polish for editor panels and resource/config lists.
+Phase 5 scrolling/list containment polish is complete in LDLib-MultiLoader. Next work is Phase 6: editor shell layout polish for the top/side/bottom panels.
 
 ## Baseline evidence
 
@@ -57,7 +57,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - [x] Phase 2: LDLib visual foundation.
 - [x] Phase 3: Configurator usability.
 - [x] Phase 4: Input/hitbox/GUI-scale correctness.
-- [ ] Phase 5: Scrolling/clipping/containment.
+- [x] Phase 5: Scrolling/clipping/containment.
 - [ ] Phase 6: Editor shell layout polish.
 - [ ] Phase 7: Photon-specific polish.
 - [ ] Phase 8: Safe modern nice-to-haves.
@@ -70,6 +70,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - LDLib-MultiLoader `b905b74f` - `style: strengthen editor ui surfaces`
 - LDLib-MultiLoader `43a7a739` - `style: improve editor configurator controls`
 - LDLib-MultiLoader `003b38dc` - `fix: correct editor dialog and scroll hit bounds`
+- LDLib-MultiLoader `2d7d6b7e` - `style: polish editor scrollable lists`
 
 ## Validation log
 
@@ -77,6 +78,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - Phase 2: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed. Root `./gradlew` is not executable in this repo, so the validation used `sh ./gradlew`.
 - Phase 3: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
 - Phase 4: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
+- Phase 5: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
 
 ## Phase 3 notes
 
@@ -90,3 +92,9 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - Fixed scroll child visibility checks to combine horizontal and vertical clipping instead of overwriting one axis with the other.
 - Routed scroll overlay scissoring through the scaled `RenderUtils.useScissor` path.
 - Restricted scroll-container hover/hit checks to the visible container bounds so clipped children cannot create invisible hover/click areas.
+
+## Phase 5 notes
+
+- Added stronger backgrounds and visible scrollbars to resource containers, widget toolbox lists, and selector popups.
+- Added resource/tool item cards with hover and selected borders to reduce invisible/ambiguous list hits.
+- Kept changes inside editor/list presentation; data/resource behavior was not changed.
