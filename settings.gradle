@@ -44,7 +44,7 @@ dependencyResolutionManagement {
         def architecturyLoomVersion = "1.6-SNAPSHOT"
         def quiltFlowerVersion = "1.+"
         def macheteVersion = "1.+"
-        def ldLibVersion = "1.0.26"
+        def ldLibVersion = "1.0.26-ui-local"
 
         fabric {
             def parchment = version("parchment", parchmentVersion)

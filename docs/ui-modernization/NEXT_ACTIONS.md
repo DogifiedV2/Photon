@@ -13,3 +13,8 @@ Code-side work is complete. Morning walkthrough checklist for the user:
    - bottom resource panel tabs and resource item cards.
 4. Report any remaining invisible/offset hover zones with screenshots and the exact control being hovered/clicked.
 5. If anything still feels bad, continue from this tracker rather than re-auditing from scratch.
+
+
+LDLib dependency note:
+- Photon is now pinned to the local Maven artifact version `1.0.26-ui-local`.
+- If more LDLib UI edits are made, republish from `/Users/rubenvancraenenbroeck/IdeaProjects/LDLib-MultiLoader` with `sh ./gradlew publishToMavenLocal -Pmod_version=1.0.26-ui-local --no-daemon --stacktrace`, then rerun Photon.

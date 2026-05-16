@@ -132,3 +132,10 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - Reviewed aggregate Photon diff from the pre-work commit through `f81f0d5`: code changes are scoped to Particle Info, Emitters List, and Number Function dropdown presentation.
 - Confirmed no physics, particle simulation, emitter serialization, project file format, or LDLib2 architecture backport was introduced.
 - Final subjective UX checks remain for the user walkthrough because they require live editor feel and screenshots/runtime interaction.
+
+## Local LDLib jar wiring
+
+- Published LDLib-MultiLoader to Maven local as `com.lowdragmc.ldlib:ldlib-forge-1.18.2:1.0.26-ui-local` using `sh ./gradlew publishToMavenLocal -Pmod_version=1.0.26-ui-local --no-daemon --stacktrace`.
+- Updated Photon `settings.gradle` so the LDLib version catalog points at `1.0.26-ui-local` instead of the remote `1.0.26`.
+- Verified Photon resolves the local jar with `sh ./gradlew :photon-forge:dependencyInsight --dependency ldlib-forge --configuration modImplementation --no-daemon`.
+- Re-ran `sh ./gradlew compileJava --no-daemon --stacktrace` in Photon after the dependency switch; it passed.
