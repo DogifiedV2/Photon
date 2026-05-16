@@ -39,7 +39,7 @@ public class ParticleInfoView extends FloatViewWidget {
     @Override
     public void initWidget() {
         super.initWidget();
-        content.setBackground(new GuiTextureGroup(ColorPattern.T_BLACK.rectTexture().setBottomRadius(5f), ColorPattern.GRAY.borderTexture(-1).setBottomRadius(5f)));
+        content.setBackground(new GuiTextureGroup(new ColorRectTexture(0xee202428).setBottomRadius(5f), ColorPattern.GRAY.borderTexture(-1).setBottomRadius(5f)));
         // actions
         addButton("photon.gui.editor.particle_info.restart", () -> getEditor().restartScene());
         // particles
@@ -82,7 +82,7 @@ public class ParticleInfoView extends FloatViewWidget {
         var group = addToggle("photon.gui.editor.particle_info.draggable", () -> getEditor().isDraggable(), draggable -> getEditor().setDraggable(draggable));
         var textWidth = Minecraft.getInstance().font.width(LocalizationUtils.format("photon.gui.editor.particle_info.draggable")) + 6;
         group.addWidget(new ButtonWidget(textWidth + (194 - textWidth - 70) / 2, 0, 70, 10,
-                new GuiTextureGroup(ColorPattern.T_GRAY.rectTexture().setRadius(5).setRadius(5), new TextTexture("photon.gui.editor.particle_info.reset_pos").setWidth(194)), cd -> {
+                new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(5), ColorPattern.GRAY.borderTexture(1).setRadius(5), new TextTexture("photon.gui.editor.particle_info.reset_pos").setWidth(194)), cd -> {
             var list = getEditor().getEmittersList();
             if (list != null) {
                 var selected = list.getSelected();
@@ -99,17 +99,21 @@ public class ParticleInfoView extends FloatViewWidget {
     protected void addButton(String title, Runnable onClick) {
         var offsetY = content.widgets.size() * 15;
         content.addWidget(new ButtonWidget(3, offsetY + 3, 194, 10,
-                new GuiTextureGroup(ColorPattern.T_GRAY.rectTexture().setRadius(5).setRadius(5), new TextTexture(title).setWidth(194)), cd -> onClick.run()));
+                new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(5), ColorPattern.GRAY.borderTexture(1).setRadius(5), new TextTexture(title).setWidth(194)), cd -> onClick.run())
+                .setHoverTexture(new GuiTextureGroup(ColorPattern.GRAY.rectTexture().setRadius(5), new TextTexture(title).setWidth(194))));
     }
 
     protected WidgetGroup addToggle(String title, BooleanSupplier supplier, BooleanConsumer onClick) {
         var offsetY = content.widgets.size() * 15;
         var infoGroup = new WidgetGroup(3, offsetY + 3, 194, 10);
+        infoGroup.setBackground(new GuiTextureGroup(new ColorRectTexture(0x55313638).setRadius(3), ColorPattern.T_GRAY.borderTexture(1).setRadius(3)));
+        infoGroup.setHoverTexture(ColorPattern.T_GRAY.rectTexture().setRadius(3));
         infoGroup.addWidget(new LabelWidget(0, 0, title));
         var textWidth = Minecraft.getInstance().font.width(LocalizationUtils.format(title)) + 6;
-        infoGroup.addWidget(new SwitchWidget(textWidth, -1, 10, 10, (cd, pressed) -> onClick.accept(pressed.booleanValue()))
+        infoGroup.addWidget(new SwitchWidget(textWidth, -1, 18, 10, (cd, pressed) -> onClick.accept(pressed.booleanValue()))
                 .setSupplier(supplier::getAsBoolean).setPressed(supplier.getAsBoolean())
-                .setTexture(new ColorBorderTexture(-1, -1).setRadius(5), new GuiTextureGroup(new ColorBorderTexture(-1, -1).setRadius(5), new ColorRectTexture(-1).setRadius(5).scale(0.5f))));
+                .setTexture(new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(5), new ColorBorderTexture(1, ColorPattern.GRAY.color).setRadius(5)),
+                        new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(5), new ColorBorderTexture(1, ColorPattern.GREEN.color).setRadius(5), ColorPattern.GREEN.rectTexture().setRadius(5).scale(0.45f))));
         content.addWidget(infoGroup);
         return infoGroup;
     }
@@ -117,6 +121,7 @@ public class ParticleInfoView extends FloatViewWidget {
     protected WidgetGroup addInformation(String title, Supplier<String> info) {
         var offsetY = content.widgets.size() * 15;
         var infoGroup = new WidgetGroup(3, offsetY + 3, 194, 10);
+        infoGroup.setBackground(new GuiTextureGroup(new ColorRectTexture(0x44313638).setRadius(3), ColorPattern.T_GRAY.borderTexture(1).setRadius(3)));
         infoGroup.addWidget(new LabelWidget(0, 0, title));
         var textWidth = Minecraft.getInstance().font.width(LocalizationUtils.format(title)) + 6;
         infoGroup.addWidget(new ImageWidget(textWidth, 0, 194 - textWidth, 10, new TextTexture().setWidth(194 - textWidth).setSupplier(info)));

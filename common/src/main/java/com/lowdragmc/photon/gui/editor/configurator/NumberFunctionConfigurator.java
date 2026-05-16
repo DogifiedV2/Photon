@@ -1,7 +1,10 @@
 package com.lowdragmc.photon.gui.editor.configurator;
 
+import com.lowdragmc.lowdraglib.gui.editor.ColorPattern;
 import com.lowdragmc.lowdraglib.gui.editor.Icons;
 import com.lowdragmc.lowdraglib.gui.editor.configurator.ValueConfigurator;
+import com.lowdragmc.lowdraglib.gui.texture.ColorRectTexture;
+import com.lowdragmc.lowdraglib.gui.texture.GuiTextureGroup;
 import com.lowdragmc.lowdraglib.gui.texture.IGuiTexture;
 import com.lowdragmc.lowdraglib.gui.util.TreeBuilder;
 import com.lowdragmc.lowdraglib.gui.widget.ButtonWidget;
@@ -43,30 +46,34 @@ public class NumberFunctionConfigurator extends ValueConfigurator<NumberFunction
     @Override
     public void init(int width) {
         super.init(width);
-        var w = width - leftWidth - 6 - rightWidth - 9;
+        var buttonSize = 12;
+        var w = width - leftWidth - 6 - rightWidth - buttonSize;
         group = new WidgetGroup(leftWidth, 0, w, 15);
         this.addWidget(group);
-        this.addWidget(new ButtonWidget(width - (tips.length > 0 ? 24 : 12), 2, 9, 9,
-                Icons.DOWN,
-                cd -> {
-                    var menu = TreeBuilder.Menu.start();
-                    for (Class<? extends NumberFunction> type : config.types()) {
-                        menu.leaf(type == value.getClass() ?Icons.CHECK : IGuiTexture.EMPTY, type.getSimpleName(), () -> {
-                            if (type == value.getClass()) return;
-                            try {
-                                var newValue = type.getConstructor(NumberFunctionConfig.class).newInstance(config);
-                                onValueUpdate(newValue);
-                                updateValue();
-                                group.clearAllWidgets();
-                                group.setSize(new Size(w, 15));
-                                value.createConfigurator(group, this);
-                                computeLayout();
-                            } catch (Throwable ignored) {
-                            }
-                        });
+        var button = new ButtonWidget(width - rightWidth - buttonSize - 2, 1, buttonSize, 12,
+                new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(4), ColorPattern.GRAY.borderTexture(1).setRadius(4), Icons.DOWN), null);
+        button.setHoverTexture(new GuiTextureGroup(ColorPattern.T_GRAY.rectTexture().setRadius(4), Icons.DOWN));
+        button.setHoverTooltips("ldlib.gui.editor.tips.other");
+        button.setOnPressCallback(cd -> {
+            var menu = TreeBuilder.Menu.start();
+            for (Class<? extends NumberFunction> type : config.types()) {
+                menu.leaf(type == value.getClass() ?Icons.CHECK : IGuiTexture.EMPTY, type.getSimpleName(), () -> {
+                    if (type == value.getClass()) return;
+                    try {
+                        var newValue = type.getConstructor(NumberFunctionConfig.class).newInstance(config);
+                        onValueUpdate(newValue);
+                        updateValue();
+                        group.clearAllWidgets();
+                        group.setSize(new Size(w, 15));
+                        value.createConfigurator(group, this);
+                        computeLayout();
+                    } catch (Throwable ignored) {
                     }
-                    configPanel.getEditor().openMenu(group.getPosition().x + width, group.getPosition().y, menu);
-                }).setHoverTooltips("ldlib.gui.editor.tips.other"));
+                });
+            }
+            configPanel.getEditor().openMenu(button.getPosition().x, button.getPosition().y + button.getSize().height, menu);
+        });
+        this.addWidget(button);
         assert value != null;
         value.createConfigurator(group, this);
     }

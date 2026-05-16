@@ -4,6 +4,8 @@ import com.lowdragmc.lowdraglib.gui.editor.ColorPattern;
 import com.lowdragmc.lowdraglib.gui.editor.Icons;
 import com.lowdragmc.lowdraglib.gui.editor.ui.Editor;
 import com.lowdragmc.lowdraglib.gui.editor.ui.ToolPanel;
+import com.lowdragmc.lowdraglib.gui.texture.ColorRectTexture;
+import com.lowdragmc.lowdraglib.gui.texture.GuiTextureGroup;
 import com.lowdragmc.lowdraglib.gui.texture.IGuiTexture;
 import com.lowdragmc.lowdraglib.gui.texture.TextTexture;
 import com.lowdragmc.lowdraglib.gui.util.TreeBuilder;
@@ -34,19 +36,22 @@ public class EmittersList extends DraggableScrollableWidgetGroup {
         super(0, 0, ToolPanel.WIDTH, 100);
         this.editor = editor;
         this.particleProject = particleProject;
-        setYScrollBarWidth(4).setYBarStyle(null, ColorPattern.T_WHITE.rectTexture().setRadius(2).transform(-0.5f, 0));
+        setBackground(new ColorRectTexture(0xcc313638));
+        setYScrollBarWidth(4).setYBarStyle(new ColorRectTexture(0xff15181b), ColorPattern.T_WHITE.rectTexture().setRadius(2).transform(-0.5f, 0));
         particleProject.getEmitters().forEach(this::addNewEmitter);
     }
 
     public void addNewEmitter(IParticleEmitter emitter) {
         int yOffset = 3 + widgets.size() * 15;
         var selectableWidgetGroup = new SelectableWidgetGroup(0, yOffset, ToolPanel.WIDTH - 2, 10);
+        selectableWidgetGroup.setBackground(new GuiTextureGroup(new ColorRectTexture(0xff15181b).setRadius(3), ColorPattern.T_GRAY.borderTexture(1).setRadius(3)));
+        selectableWidgetGroup.setHoverTexture(new ColorRectTexture(0xcc313638).setRadius(3));
         selectableWidgetGroup.addWidget(new SwitchWidget(3, 0, 10, 10, (cd, pressed) -> emitter.setVisible(pressed))
                 .setTexture(Icons.EYE_OFF, Icons.EYE)
                 .setHoverTexture(ColorPattern.T_GRAY.rectTexture())
                 .setSupplier(emitter::isVisible));
         selectableWidgetGroup.addWidget(new ImageWidget(14, 0, ToolPanel.WIDTH - 16, 10, new TextTexture().setSupplier(emitter::getName).setType(TextTexture.TextType.HIDE)));
-        selectableWidgetGroup.setSelectedTexture(ColorPattern.T_GRAY.rectTexture());
+        selectableWidgetGroup.setSelectedTexture(ColorPattern.GREEN.borderTexture(1).setRadius(3));
         selectableWidgetGroup.setOnSelected(group -> {
             editor.openEmitterConfigurator(emitter);
             selected = emitter;
