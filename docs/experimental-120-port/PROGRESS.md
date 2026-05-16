@@ -113,3 +113,14 @@ Next implementation step:
   - Photon: `:photon-forge:compileJava`
   - Photon: `:photon-forge:runClient` reached the Minecraft client; latest log `/tmp/photon-runclient11.log` has no startup/mixin/LDLib/JOML errors, only the normal Realms auth message.
 - Remaining required gate: open the Photon editor in the launched client and run the manual create/save/load/spawn smoke checklist from `VALIDATION.md`.
+
+
+## Editor open and New Project crash triage
+
+- Verified old Photon 1.18 opened the editor through `ServerCommands -> ParticleEditorFactory -> LDLib UIFactory.openUI`, not through the Photon 1.20 direct client command.
+- Added `FXEditorFactory` and restored `/photon editor` plus `/photon particle_editor` server commands for the new FX editor using the proven LDLib UIFactory open path. The user verified `/photon editor` opens the editor.
+- Investigated the New Project crash. Latest crash report `forge/run/crash-reports/crash-2026-05-16_14.07.48-client.txt` showed `BloomEffect` failed to load missing `photon:shaders/core/particle.json` while material resource previews were built.
+- Added missing Photon 1.20 particle shader resources: `particle.json`, `particle.fsh`, `particle.vsh`.
+- Merged missing Photon 1.20 language keys into `en_us.json` and `zh_cn.json` to reduce raw translation-key labels in the editor.
+- Validation passed on 2026-05-16: Photon lang/shader JSON parse check and `:photon-forge:compileJava`.
+- Remaining required gate: rerun client and click New Project again; if it no longer crashes, continue particle/beam/trail creation and save/load/spawn smoke tests.
