@@ -1,11 +1,15 @@
 # Next Actions
 
-1. Start Phase 9 final regression/review/handoff.
-2. Run validation in both repos:
-   - LDLib-MultiLoader compile,
-   - Photon compile,
-   - git diff/status review in both repos.
-3. Do a code review pass over all committed diffs for UI regressions and accidental behavior changes.
-4. Fix and commit any issues found.
-5. Update `PROGRESS.md` and `BLOCKERS.md` with final status and human walkthrough notes.
-6. Only mark the goal complete if all code-side requirements are done and documented.
+Code-side work is complete. Morning walkthrough checklist for the user:
+
+1. Launch the 1.18.2 client with the updated local LDLib-MultiLoader and Photon.
+2. Open the Photon particle editor.
+3. Check these UI areas:
+   - right Configurator panel backgrounds and configurator rows,
+   - number/string/selector/boolean controls,
+   - top menus and file dialogs/export dialogs,
+   - left emitter list and add-emitter context menu,
+   - Particle Information floating view,
+   - bottom resource panel tabs and resource item cards.
+4. Report any remaining invisible/offset hover zones with screenshots and the exact control being hovered/clicked.
+5. If anything still feels bad, continue from this tracker rather than re-auditing from scratch.

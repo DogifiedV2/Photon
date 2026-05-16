@@ -2,7 +2,7 @@
 
 ## Real blockers
 
-None yet.
+None for code-side completion.
 
 ## Pending human walkthrough checks
 
@@ -19,3 +19,9 @@ The final subjective UX walkthrough must be done by the user after the code-side
 
 - Full editor feel cannot be completely verified without user walkthrough.
 - Code-side validation should still compile, launch/smoke where possible, review diffs, and fix obvious issues before handoff.
+
+## Final code-side status
+
+- All planned code-side phases are complete and committed.
+- The only remaining validation is the user subjective walkthrough in a live client.
+- Photon still has unrelated pre-existing local changes to `.gitignore` and `gradlew`; they were intentionally not included in UI modernization commits.

@@ -2,7 +2,7 @@
 
 ## Current status
 
-Phase 8 safe modern nice-to-haves are complete. Next work is Phase 9: final regression, review, and handoff.
+Phase 9 final regression/review/handoff is complete. Code-side UI modernization is ready for the user morning walkthrough.
 
 ## Baseline evidence
 
@@ -61,7 +61,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - [x] Phase 6: Editor shell layout polish.
 - [x] Phase 7: Photon-specific polish.
 - [x] Phase 8: Safe modern nice-to-haves.
-- [ ] Phase 9: Final regression/review/handoff.
+- [x] Phase 9: Final regression/review/handoff.
 
 ## Commits
 
@@ -85,6 +85,8 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - Phase 6: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
 - Phase 7: `sh ./gradlew compileJava --no-daemon --stacktrace` in Photon passed.
 - Phase 8: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
+- Phase 9: final `sh ./gradlew compileJava --no-daemon --stacktrace` passed in both LDLib-MultiLoader and Photon.
+- Phase 9: git diff/status review complete. LDLib-MultiLoader is clean; Photon only has pre-existing unrelated `.gitignore` and `gradlew` changes left uncommitted.
 
 ## Phase 3 notes
 
@@ -123,3 +125,10 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - Added a final low-risk polish pass to file dialogs/export/import surfaces.
 - Strengthened file tree and open-folder button styling while preserving dialog behavior.
 - Avoided LDLib2 architecture backports and runtime/editor feature changes.
+
+## Phase 9 final review
+
+- Reviewed aggregate LDLib-MultiLoader diff from the pre-work commit through `f65642c5`: changes are scoped to editor colors, surfaces, configurator affordances, scroll/hit containment, menus, dialogs, and selector/resource/toolbox presentation.
+- Reviewed aggregate Photon diff from the pre-work commit through `f81f0d5`: code changes are scoped to Particle Info, Emitters List, and Number Function dropdown presentation.
+- Confirmed no physics, particle simulation, emitter serialization, project file format, or LDLib2 architecture backport was introduced.
+- Final subjective UX checks remain for the user walkthrough because they require live editor feel and screenshots/runtime interaction.
