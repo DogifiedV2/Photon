@@ -2,7 +2,7 @@
 
 ## Current status
 
-Phase 7 Photon-specific editor polish is complete. Next work is Phase 8: safe modern nice-to-haves and final small usability improvements.
+Phase 8 safe modern nice-to-haves are complete. Next work is Phase 9: final regression, review, and handoff.
 
 ## Baseline evidence
 
@@ -60,7 +60,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - [x] Phase 5: Scrolling/clipping/containment.
 - [x] Phase 6: Editor shell layout polish.
 - [x] Phase 7: Photon-specific polish.
-- [ ] Phase 8: Safe modern nice-to-haves.
+- [x] Phase 8: Safe modern nice-to-haves.
 - [ ] Phase 9: Final regression/review/handoff.
 
 ## Commits
@@ -73,6 +73,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - LDLib-MultiLoader `2d7d6b7e` - `style: polish editor scrollable lists`
 - LDLib-MultiLoader `1a3a9ce5` - `style: polish editor shell tabs`
 - Photon `f81f0d5` - `style: polish photon editor panels`
+- LDLib-MultiLoader `f65642c5` - `style: polish editor file dialogs`
 
 ## Validation log
 
@@ -83,6 +84,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - Phase 5: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
 - Phase 6: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
 - Phase 7: `sh ./gradlew compileJava --no-daemon --stacktrace` in Photon passed.
+- Phase 8: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
 
 ## Phase 3 notes
 
@@ -115,3 +117,9 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - Added visible cards, hover state, selected borders, and scrollbar track styling for the Photon emitter list.
 - Made number-function dropdown buttons more visible and opened their menus next to the button instead of far to the right.
 - No particle runtime or emitter simulation logic was changed.
+
+## Phase 8 notes
+
+- Added a final low-risk polish pass to file dialogs/export/import surfaces.
+- Strengthened file tree and open-folder button styling while preserving dialog behavior.
+- Avoided LDLib2 architecture backports and runtime/editor feature changes.
