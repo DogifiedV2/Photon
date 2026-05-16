@@ -2,7 +2,7 @@
 
 ## Current status
 
-Phase 2 visual foundation is complete in LDLib-MultiLoader. Next work is Phase 3: make individual configurator rows and small controls easier to read and click without changing particle behavior.
+Phase 3 configurator usability is complete in LDLib-MultiLoader. Next work is Phase 4: fix input/hitbox/GUI-scale correctness issues found during the audit.
 
 ## Baseline evidence
 
@@ -55,7 +55,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - [x] Phase 0: Tracker setup started.
 - [x] Phase 1: Baseline audit.
 - [x] Phase 2: LDLib visual foundation.
-- [ ] Phase 3: Configurator usability.
+- [x] Phase 3: Configurator usability.
 - [ ] Phase 4: Input/hitbox/GUI-scale correctness.
 - [ ] Phase 5: Scrolling/clipping/containment.
 - [ ] Phase 6: Editor shell layout polish.
@@ -68,8 +68,16 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - Photon `b1629c4` - `docs: add photon editor ui modernization plan`
 - Photon `68167bd` - `docs: record editor ui baseline audit`
 - LDLib-MultiLoader `b905b74f` - `style: strengthen editor ui surfaces`
+- LDLib-MultiLoader `43a7a739` - `style: improve editor configurator controls`
 
 ## Validation log
 
 - Phase 1: source audit only; no runtime changes.
 - Phase 2: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed. Root `./gradlew` is not executable in this repo, so the validation used `sh ./gradlew`.
+- Phase 3: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
+
+## Phase 3 notes
+
+- Added shared row/card backgrounds and hover treatments to configurator rows.
+- Strengthened number/string field surfaces, selector popups, boolean toggles, and color picker surfaces.
+- Preserved existing supplier/update callback behavior; no particle runtime behavior was changed.
