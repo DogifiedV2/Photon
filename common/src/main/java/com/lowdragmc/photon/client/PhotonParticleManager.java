@@ -3,7 +3,6 @@ package com.lowdragmc.photon.client;
 import com.lowdragmc.lowdraglib.client.scene.ParticleManager;
 import com.lowdragmc.photon.client.emitter.PhotonParticleRenderType;
 import com.mojang.blaze3d.vertex.PoseStack;
-import lombok.Setter;
 import lombok.val;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,12 +20,13 @@ public class PhotonParticleManager extends ParticleManager {
 
     private final long[] lastCPUTimes = new long[20];
     private int tickIndex = 0;
-    @Setter
     private boolean paused;
+    private float pausedPartialTicks;
 
     @Override
     public void render(PoseStack pMatrixStack, Camera pActiveRenderInfo, float pPartialTicks) {
-        super.render(pMatrixStack, pActiveRenderInfo, pPartialTicks);
+        float renderPartialTicks = getStablePartialTicks(pPartialTicks);
+        super.render(pMatrixStack, pActiveRenderInfo, renderPartialTicks);
         PhotonParticleRenderType.finishRender();
     }
 
@@ -42,6 +42,18 @@ public class PhotonParticleManager extends ParticleManager {
 
     public long getCPUTime() {
         return (long) Arrays.stream(lastCPUTimes).average().orElse(0)  / 1000;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    public float getStablePartialTicks(float partialTicks) {
+        if (!paused) {
+            pausedPartialTicks = partialTicks;
+            return partialTicks;
+        }
+        return pausedPartialTicks;
     }
 
 }

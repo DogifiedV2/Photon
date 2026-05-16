@@ -70,7 +70,7 @@ public class ParticleInfoView extends FloatViewWidget {
             if (list != null) {
                 var selected = list.getSelected();
                 if (selected != null) {
-                    return selected.self().getT(Minecraft.getInstance().getFrameTime());
+                    return selected.self().getT(getEditor().getParticleScene().getParticleManager().getStablePartialTicks(Minecraft.getInstance().getFrameTime()));
                 }
             }
             return 0d;

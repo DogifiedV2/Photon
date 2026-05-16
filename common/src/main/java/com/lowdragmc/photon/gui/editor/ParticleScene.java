@@ -143,7 +143,7 @@ public class ParticleScene extends SceneWidget {
             var selected = editor.getEmittersList().getSelected();
             if (selected != null) {
                 PoseStack matrixStack = new PoseStack();
-                var position = selected.self().getPos(Minecraft.getInstance().getFrameTime());
+                var position = selected.self().getPos(particleManager.getStablePartialTicks(Minecraft.getInstance().getFrameTime()));
                 var aabb = new AABB(position.x - 0.1, position.y - 0.1, position.z - 0.1, position.x + 0.1, position.y + 0.1, position.z + 0.1);
                 renderBox(matrixStack, aabb, 1, 0, 0);
 
@@ -180,7 +180,7 @@ public class ParticleScene extends SceneWidget {
             var selected = editor.getEmittersList().getSelected();
             if (selected != null) {
                 PoseStack poseStack = new PoseStack();
-                var aabb = selected.getCullBox(Minecraft.getInstance().getFrameTime());
+                var aabb = selected.getCullBox(particleManager.getStablePartialTicks(Minecraft.getInstance().getFrameTime()));
                 if (aabb != null) {
                     renderBox(poseStack, aabb, 0.5f, 0.5f, 0.5f);
                 }
