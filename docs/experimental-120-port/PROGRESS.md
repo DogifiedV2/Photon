@@ -27,7 +27,7 @@ Date: 2026-05-16
 - [x] Commands/save/load/runtime integration ported to compile gate.
 - [x] Rendering/mixins adapted to MC 1.18.2 compile gate.
 - [x] Forge compile passes.
-- [ ] Forge dev client launches.
+- [x] Forge dev client launches.
 - [ ] Editor opens.
 - [ ] Basic create/save/load/spawn smoke passes.
 - [ ] Bug-triage checklist completed.
@@ -83,8 +83,8 @@ Earlier failing categories now addressed enough for compile. Historical categori
 
 Next implementation step:
 
-1. Run `:photon-forge:runClient` and fix startup/mixin/resource crashes.
-2. Open the Photon editor and run the manual create/save/load/spawn smoke checklist in `VALIDATION.md`.
+1. With the dev client already launched, open the Photon editor and run the manual create/save/load/spawn smoke checklist in `VALIDATION.md`.
+2. Fix any editor/runtime issues surfaced by the smoke test.
 3. Run and update the bug-triage checklist in `BUG_TRIAGE.md`, then fix or document confirmed issues.
 
 ## Photon direct overlay slice - runtime/editor compiles
@@ -99,3 +99,17 @@ Next implementation step:
   - `:photon-forge:compileJava`
   - `:photon-forge:dependencyInsight --dependency ldlib-forge --configuration modImplementation` resolved `com.lowdragmc.ldlib:ldlib-forge-1.18.2:1.0.26-120port.1`.
 - Remaining required gate: launch `:photon-forge:runClient`, verify mixins/startup, then open the editor and run the manual create/save/load/spawn smoke tests from `VALIDATION.md`.
+
+
+## Forge dev launch wiring checkpoint
+
+- Fixed the experimental Forge dev launch path after the direct Photon 1.20 overlay.
+- LDLib now publishes its named `dev-shadow` classifier to Maven local for the Photon dev run. This avoids the earlier Forge userdev mismatch where the normal remapped Maven artifact could be discovered as a mod but still carried runtime names that crashed the client.
+- Photon now resolves `com.lowdragmc.ldlib:ldlib-forge-1.18.2:1.0.26-120port.1:dev-shadow` for `modImplementation`, keeping the dependency tied to the experimental Maven-local LDLib version instead of an absolute local jar path.
+- Added JOML to the Forge runtime library path so LDLib/Photon annotation scanning can load 1.20-style shape/object classes using `org.joml.*` types.
+- Validation passed on 2026-05-16:
+  - LDLib: `:ldlib-forge:compileJava publishToMavenLocal -Pmod_version=1.0.26-120port.1`
+  - Photon: `:photon-forge:dependencyInsight --dependency ldlib-forge --configuration modImplementation` resolved `com.lowdragmc.ldlib:ldlib-forge-1.18.2:1.0.26-120port.1`.
+  - Photon: `:photon-forge:compileJava`
+  - Photon: `:photon-forge:runClient` reached the Minecraft client; latest log `/tmp/photon-runclient11.log` has no startup/mixin/LDLib/JOML errors, only the normal Realms auth message.
+- Remaining required gate: open the Photon editor in the launched client and run the manual create/save/load/spawn smoke checklist from `VALIDATION.md`.

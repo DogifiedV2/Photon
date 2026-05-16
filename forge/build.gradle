@@ -95,10 +95,11 @@ dependencies {
     shadowCommon(project(path: ":${mod_id}-common", configuration: "transformProductionForge")) { transitive = false }
 
     // LDLib
-    modImplementation(forge.ldlib.forge) { transitive = false }
-    include(forge.ldlib.forge)
+    def experimentalLdlibDev = "com.lowdragmc.ldlib:ldlib-forge-${libs.versions.minecraft.get()}:${forge.versions.ldlib.get()}:dev-shadow"
+    modImplementation(experimentalLdlibDev) { transitive = false }
 
-    implementation 'org.joml:joml:1.10.4'
+    implementation(include("org.joml:joml:1.10.4"))
+    forgeRuntimeLibrary("org.joml:joml:1.10.4")
 
     // Rubidium
     modImplementation(forge.rubidium) { transitive = false }

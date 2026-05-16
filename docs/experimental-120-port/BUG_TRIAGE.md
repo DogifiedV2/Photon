@@ -97,7 +97,7 @@ Run LDLib publish/compile checks from the LDLib repo after each LDLib phase.
 
 | ID | Classification | Severity | Area | Evidence | Decision | Verification |
 |---|---|---:|---|---|---|---|
-|  |  |  |  |  |  |  |
+| PT-001 | Confirmed bug | Blocker | Forge dev launch / LDLib runtime wiring | `/tmp/photon-runclient7.log` / crash report showed `NoSuchMethodError: net.minecraft.client.Minecraft.m_91087_()` from LDLib runtime naming mismatch; `/tmp/photon-runclient9.log` showed `NoClassDefFoundError: org/joml/Vector3fc` during LDLib annotation scanning. | Fixed by publishing LDLib `dev-shadow` classifier to Maven local, consuming that classifier from Photon `modImplementation`, and adding JOML to Forge runtime library wiring. | LDLib `:ldlib-forge:compileJava publishToMavenLocal -Pmod_version=1.0.26-120port.1` passed; Photon `:photon-forge:dependencyInsight --dependency ldlib-forge --configuration modImplementation` passed; Photon `:photon-forge:compileJava` passed; Photon `:photon-forge:runClient` reached the Minecraft client in `/tmp/photon-runclient11.log` with no startup/mixin/LDLib/JOML errors. |
 
 ## Completion gate
 

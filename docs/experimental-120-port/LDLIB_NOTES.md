@@ -38,12 +38,12 @@ Use a clearly local/experimental version. Suggested:
 1.0.26-120port.1
 ```
 
-Current status: published to Maven local on 2026-05-16 and verified from Photon with dependencyInsight.
+Current status: published to Maven local on 2026-05-16 and verified from Photon with dependencyInsight. The Forge dev run consumes the Maven-local `dev-shadow` classifier of the same experimental version so the discovered LDLib mod uses named dev-runtime classes.
 
 Publish command used:
 
 ```bash
-sh ./gradlew -Dorg.gradle.java.home="$(/usr/libexec/java_home -v 17)" publishToMavenLocal -Pmod_version=1.0.26-120port.1 --no-daemon --stacktrace
+sh ./gradlew -Dorg.gradle.java.home="$(/usr/libexec/java_home -v 17)" :ldlib-forge:compileJava publishToMavenLocal -Pmod_version=1.0.26-120port.1 --no-daemon --stacktrace
 ```
 
 ## Port ledger
@@ -70,3 +70,6 @@ sh ./gradlew -Dorg.gradle.java.home="$(/usr/libexec/java_home -v 17)" publishToM
 - Current LDLib bridge slice added JOML, scene object/transform bridge classes, and SceneWidget compatibility helpers; LDLib compile/publish and Photon compile passed on 2026-05-16.
 
 - LDLib commit `20e772b7` added a minimal `ShaderSSBO` bridge required by Photon 1.20 trail particles; LDLib compile/publish passed on 2026-05-16.
+
+- LDLib now publishes `ldlib-forge-1.18.2-1.0.26-120port.1-dev-shadow.jar` to Maven local as a `dev-shadow` classifier for Photon Forge dev runs.
+- LDLib Forge also declares JOML on the Forge runtime library path because the backported scene/shape APIs expose `org.joml.*` types during annotation scanning.
