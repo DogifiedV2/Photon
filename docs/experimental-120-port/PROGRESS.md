@@ -34,6 +34,7 @@ Date: 2026-05-16
 
 ## Latest notes
 
+- LDLib bridge slice 2 completed: JOML, scene object/transform bridge classes, and SceneWidget compatibility helpers were added, published to Maven local, and Photon compile still passes.
 - LDLib bridge slice 1 completed: configurator container/selector and layout enums were added, published to Maven local, and Photon compile still passes.
 - Created `docs/experimental-120-port/INVENTORY.md` with the Photon 1.20 -> LDLib 1.18 API gap list.
 - Created detached source worktrees for comparison:
@@ -49,6 +50,6 @@ Date: 2026-05-16
 
 ## Next action
 
-1. Start LDLib bridge work with the missing scene editor/object tree/configurator APIs in `INVENTORY.md`.
-2. Republish LDLib after each successful bridge slice.
-3. Begin Photon runtime/editor file port once the required LDLib bridge APIs compile.
+1. Start Photon 1.20 runtime/object model port, adding Photon-side JOML dependency as needed.
+2. Compile after each file group and fill any remaining LDLib bridge gaps surfaced by errors.
+3. Continue with Photon editor files once runtime/object classes compile.

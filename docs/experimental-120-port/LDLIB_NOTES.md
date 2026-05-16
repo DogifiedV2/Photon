@@ -51,8 +51,8 @@ sh ./gradlew -Dorg.gradle.java.home="$(/usr/libexec/java_home -v 17)" publishToM
 | Item | Source 1.20 class/path | 1.18 target path | Status | Notes |
 |---|---|---|---|---|
 | Editor base support | `/tmp/ldlib-120/.../gui/editor/ui/Editor.java` and related panels | current LDLib editor UI package | inspecting | Existing 1.18 editor compiles; 1.20 adds history/save helpers and panel behavior. |
-| Scene object support | `/tmp/ldlib-120/.../gui/editor/ui/sceneeditor/**` | missing in 1.18 LDLib | pending | Needed by Photon 1.20 `ParticleScene` / `ParticleScenePanel`; requires JOML-to-1.18 math/render adaptation. |
-| Transform support | `sceneeditor/data/Transform.java`, `Ray.java` | missing in 1.18 LDLib | pending | 1.20 source uses `org.joml`; MC 1.18 rendering stack primarily uses `com.mojang.math`, so direct copy is unsafe. |
+| Scene object support | `/tmp/ldlib-120/.../gui/editor/ui/sceneeditor/**` | LDLib experimental branch | partial | Scene/runtime bridge classes added; transform gizmo visuals are deferred/minimal. |
+| Transform support | `sceneeditor/data/Transform.java`, `Ray.java` | LDLib experimental branch | partial | JOML dependency and Transform/Ray bridge added; editor accessors for JOML fields still need verification during Photon port. |
 | Configurator support | `ConfiguratorSelectorConfigurator`, `IConfiguratorContainer`, newer accessors | LDLib experimental branch | partial | `IConfiguratorContainer` and `ConfiguratorSelectorConfigurator` added; newer accessors still pending if compile requires them. |
 | Resource panel support | 1.20 `ResourcePanel`, `ResourceContainer`, resource classes | current LDLib resource UI package | inspecting | Existing resource UI has older behavior; compare before replacing. |
 | Toggle/dropdown/text field visuals | 1.20 configurators/widgets | current LDLib configurators/widgets | partial | Existing branch contains prior 1.18 UI polish; `SelectorWidget#setCandidatesSupplier` added for 1.20 selector behavior. |
@@ -66,4 +66,5 @@ sh ./gradlew -Dorg.gradle.java.home="$(/usr/libexec/java_home -v 17)" publishToM
 ## LDLib bridge commits
 
 - `4a2759c5` recorded the initial Photon-required LDLib API inventory.
-- Current LDLib bridge slice added `IConfiguratorContainer`, `ConfiguratorSelectorConfigurator`, `Layout`, `Align`, and dynamic selector candidates; LDLib compile/publish passed on 2026-05-16.
+- `c1e637d3` added `IConfiguratorContainer`, `ConfiguratorSelectorConfigurator`, `Layout`, `Align`, and dynamic selector candidates; LDLib compile/publish passed on 2026-05-16.
+- Current LDLib bridge slice added JOML, scene object/transform bridge classes, and SceneWidget compatibility helpers; LDLib compile/publish and Photon compile passed on 2026-05-16.
