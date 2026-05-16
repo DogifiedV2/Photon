@@ -29,7 +29,7 @@ Date: 2026-05-16
 - [x] Forge compile passes.
 - [x] Forge dev client launches.
 - [x] Editor opens.
-- [ ] Basic create/save/load/spawn smoke passes.
+- [x] Basic create/save/load/spawn smoke passes.
 - [ ] Bug-triage checklist completed.
 
 ## Latest notes
@@ -159,7 +159,25 @@ Next implementation step:
 
 Remaining gates:
 
-1. Exercise save/export dialog and verify exported `.fx` reloads through the resource manager.
-2. Smoke block/entity spawn and remove commands against an exported test effect.
-3. Review the render/bloom bridge changes for unnecessary risk now that the actual black-wedge fix is known.
-4. Keep the dev harness until final validation is done, then decide whether to leave it env-gated or remove it.
+1. Review the render/bloom bridge changes for unnecessary risk now that the actual black-wedge fix is known.
+2. Run a focused remove-command smoke or code review for remove packet paths.
+3. Keep the dev harness until final validation is done, then decide whether to leave it env-gated or remove it.
+
+
+## Export/reload/spawn smoke checkpoint - 2026-05-16 17:33
+
+- Found and fixed a real save/export blocker: serializing the 1.20 `Transform` object failed on 1.18 because LDLib did not register JOML `Vector3f`/`Quaternionf` sync-data accessors.
+- LDLib now includes/registers the 1.20 `Vector3fAccessor` and `QuaternionfAccessor` bridge accessors.
+- Added env-gated Photon smoke support:
+  - `PHOTON_AUTO_EXPORT_SMOKE=true` exports `forge/run/ldlib/assets/photon/fx/codex_smoke.fx`.
+  - `PHOTON_AUTO_SPAWN_SMOKE=true` reloads resource packs, loads `photon:codex_smoke` through `FXHelper`, and spawns it as a `BlockEffect` at the player position.
+- Validation passed:
+  - LDLib `:ldlib-forge:compileJava publishToMavenLocal -Pmod_version=1.0.26-120port.1`
+  - Photon `:photon-forge:compileJava --refresh-dependencies`
+  - Photon `:photon-forge:runClient` with `PHOTON_AUTO_OPEN_EDITOR=true PHOTON_AUTO_LOAD_WORLD='New World (1)' PHOTON_AUTO_EMITTERS='particle,beam,trail' PHOTON_AUTO_EXPORT_SMOKE=true PHOTON_AUTO_SPAWN_SMOKE=true`
+- Evidence:
+  - Log showed `Photon dev smoke exported FX to .../forge/run/ldlib/assets/photon/fx/codex_smoke.fx`.
+  - Log showed `Photon dev smoke spawned exported FX at BlockPos{x=8, y=72, z=10}`.
+  - Exported file exists: `forge/run/ldlib/assets/photon/fx/codex_smoke.fx`.
+  - Screenshot: `/tmp/codex-screens/photon-export-spawn-smoke.png`.
+- Note: the smoke harness resource reload can visually clear/reset parts of the open configurator panel; this path is env-gated and is only for validation. Normal editor open/use is unaffected.
