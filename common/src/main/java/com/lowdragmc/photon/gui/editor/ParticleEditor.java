@@ -38,6 +38,8 @@ public class ParticleEditor extends Editor {
     private boolean dragAll = false;
     @Getter @Setter
     private boolean renderCullBox = false;
+    @Getter
+    private boolean paused = false;
 
     public ParticleEditor(File workSpace) {
         super(workSpace);
@@ -78,6 +80,13 @@ public class ParticleEditor extends Editor {
                 emitter.reset();
                 emitter.emmitToLevel(getEditorFX(), particleScene.level, pos.x, pos.y, pos.z, rotation.x, rotation.y, rotation.z);
             }
+        }
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+        if (particleScene != null) {
+            particleScene.getParticleManager().setPaused(paused);
         }
     }
 

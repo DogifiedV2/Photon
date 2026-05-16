@@ -131,6 +131,7 @@
   "photon.emitter.beam.config.color": "Controls the color during its lifetime.",
 
   "photon.gui.editor.particle_info.restart": "Restart",
+  "photon.gui.editor.particle_info.pause": "Pause",
   "photon.gui.editor.particle_info.particles": "Particles",
   "photon.gui.editor.particle_info.time": "Time",
   "photon.gui.editor.particle_info.cpu_time": "CPU Time",

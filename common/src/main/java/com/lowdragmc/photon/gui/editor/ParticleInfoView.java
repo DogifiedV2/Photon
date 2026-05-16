@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 public class ParticleInfoView extends FloatViewWidget {
 
     public ParticleInfoView() {
-        super(100, 100, 200, 135, false);
+        super(100, 100, 200, 155, false);
     }
 
     @Override
@@ -39,9 +39,11 @@ public class ParticleInfoView extends FloatViewWidget {
     @Override
     public void initWidget() {
         super.initWidget();
-        content.setBackground(new GuiTextureGroup(new ColorRectTexture(0xee202428).setBottomRadius(5f), ColorPattern.GRAY.borderTexture(-1).setBottomRadius(5f)));
+        title.setBackground(new GuiTextureGroup(new ColorRectTexture(0xee8f1326).setTopRadius(5f), ColorPattern.LIGHT_GRAY.borderTexture(-1).setTopRadius(5f)));
+        content.setBackground(new GuiTextureGroup(new ColorRectTexture(0xf015181b).setBottomRadius(5f), ColorPattern.LIGHT_GRAY.borderTexture(-1).setBottomRadius(5f)));
         // actions
         addButton("photon.gui.editor.particle_info.restart", () -> getEditor().restartScene());
+        addToggle("photon.gui.editor.particle_info.pause", () -> getEditor().isPaused(), paused -> getEditor().setPaused(paused));
         // particles
         addInformation("photon.gui.editor.particle_info.particles", () -> {
             var list = getEditor().getEmittersList();
@@ -110,10 +112,12 @@ public class ParticleInfoView extends FloatViewWidget {
         infoGroup.setHoverTexture(ColorPattern.T_GRAY.rectTexture().setRadius(3));
         infoGroup.addWidget(new LabelWidget(0, 0, title));
         var textWidth = Minecraft.getInstance().font.width(LocalizationUtils.format(title)) + 6;
-        infoGroup.addWidget(new SwitchWidget(textWidth, -1, 18, 10, (cd, pressed) -> onClick.accept(pressed.booleanValue()))
+        infoGroup.addWidget(new SwitchWidget(textWidth, -1, 12, 12, (cd, pressed) -> onClick.accept(pressed.booleanValue()))
                 .setSupplier(supplier::getAsBoolean).setPressed(supplier.getAsBoolean())
-                .setTexture(new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(5), new ColorBorderTexture(1, ColorPattern.GRAY.color).setRadius(5)),
-                        new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(5), new ColorBorderTexture(1, ColorPattern.GREEN.color).setRadius(5), ColorPattern.GREEN.rectTexture().setRadius(5).scale(0.45f))));
+                .setTexture(new GuiTextureGroup(ColorPattern.PANEL_DARK.rectTexture().setRadius(2), ColorPattern.LIGHT_GRAY.borderTexture(1).setRadius(2)),
+                        new GuiTextureGroup(ColorPattern.PANEL_DARK.rectTexture().setRadius(2), ColorPattern.GREEN.borderTexture(1).setRadius(2),
+                                new TextTexture("✓", ColorPattern.GREEN.color).setWidth(12).setDropShadow(false)))
+                .setHoverTexture(new GuiTextureGroup(ColorPattern.PANEL_HOVER.rectTexture().setRadius(2), ColorPattern.WHITE.borderTexture(1).setRadius(2))));
         content.addWidget(infoGroup);
         return infoGroup;
     }

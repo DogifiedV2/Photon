@@ -149,6 +149,7 @@
     "photon.emitter.beam.config.color": "设置光束在其生命周期内的颜色。",
   
     "photon.gui.editor.particle_info.restart": "重启",
+    "photon.gui.editor.particle_info.pause": "暂停",
     "photon.gui.editor.particle_info.particles": "粒子数",
     "photon.gui.editor.particle_info.time": "时间",
     "photon.gui.editor.particle_info.cpu_time": "CPU时间",
