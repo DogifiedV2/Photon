@@ -4,6 +4,7 @@ import com.lowdragmc.lowdraglib.LDLib;
 import com.lowdragmc.lowdraglib.Platform;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,16 +37,46 @@ public class Photon {
     }
 
     public static boolean isUsingShaderPack() {
-        if (isShaderModInstalled()) {
-            try {
-                Class<?> irisApiClass = Class.forName("net.irisshaders.iris.api.v0.IrisApi");
-                Object irisApi = irisApiClass.getMethod("getInstance").invoke(null);
-                return (boolean) irisApiClass.getMethod("isShaderPackInUse").invoke(irisApi);
-            } catch (ReflectiveOperationException exception) {
-                return false;
-            }
+        return isShaderModInstalled() && IrisFramebufferUtils.isUsingShaderPack();
+    }
+
+    public static int getSolidFrameBufferID() {
+        if (isUsingShaderPack()) {
+            return IrisFramebufferUtils.getIrisSolidFboId();
         }
-        return false;
+
+        return Minecraft.getInstance().getMainRenderTarget().frameBufferId;
+    }
+
+    public static int getTranslucentFrameBufferID() {
+        if (isUsingShaderPack()) {
+            return IrisFramebufferUtils.getIrisTranslucentFboId();
+        }
+
+        return Minecraft.getInstance().getMainRenderTarget().frameBufferId;
+    }
+
+    public static int getDepthTextureID() {
+        if (isUsingShaderPack()) {
+            return IrisFramebufferUtils.getIrisDepthTextureId();
+        }
+
+        return Minecraft.getInstance().getMainRenderTarget().getDepthTextureId();
+    }
+
+    public static int getSolidTextureID() {
+        if (isUsingShaderPack()) {
+            return IrisFramebufferUtils.getIrisSolidTextureId();
+        }
+
+        return Minecraft.getInstance().getMainRenderTarget().getColorTextureId();
+    }
+
+    public static int getTranslucentTextureID(boolean writeBuffer) {
+        if (isUsingShaderPack()) {
+            return IrisFramebufferUtils.getIrisTranslucentTextureId(writeBuffer);
+        }
+
+        return Minecraft.getInstance().getMainRenderTarget().getColorTextureId();
     }
 }
-

@@ -39,41 +39,62 @@ public class BlockEffectCommand extends EffectCommand {
     public static LiteralArgumentBuilder<CommandSourceStack> createServerCommand() {
         return Commands.literal("block")
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
-                        .executes(c -> execute(c, 0))
+                        .executes(c -> execute(c, false, false, false, false, false, false, false))
                         .then(Commands.argument("offset", Vec3Argument.vec3(false))
-                                .executes(c -> execute(c, 1))
+                                .executes(c -> execute(c, true, false, false, false, false, false, false))
                                 .then(Commands.argument("rotation", Vec3Argument.vec3(false))
-                                        .executes(c -> execute(c, 2))
+                                        .executes(c -> execute(c, true, true, false, false, false, false, false))
+                                        .then(Commands.argument("scale", Vec3Argument.vec3(false))
+                                                .executes(c -> execute(c, true, true, true, false, false, false, false))
+                                                .then(Commands.argument("delay", IntegerArgumentType.integer(0))
+                                                        .executes(c -> execute(c, true, true, true, true, false, false, false))
+                                                        .then(Commands.argument("force death", BoolArgumentType.bool())
+                                                                .executes(c -> execute(c, true, true, true, true, true, false, false))
+                                                                .then(Commands.argument("allow multi", BoolArgumentType.bool())
+                                                                        .executes(c -> execute(c, true, true, true, true, true, true, false))
+                                                                        .then(Commands.argument("check state", BoolArgumentType.bool())
+                                                                                .executes(c -> execute(c, true, true, true, true, true, true, true)))))))
                                         .then(Commands.argument("delay", IntegerArgumentType.integer(0))
-                                                .executes(c -> execute(c, 3))
+                                                .executes(c -> execute(c, true, true, false, true, false, false, false))
                                                 .then(Commands.argument("force death", BoolArgumentType.bool())
-                                                        .executes(c -> execute(c, 4))
+                                                        .executes(c -> execute(c, true, true, false, true, true, false, false))
                                                         .then(Commands.argument("allow multi", BoolArgumentType.bool())
-                                                                .executes(c -> execute(c, 5))
+                                                                .executes(c -> execute(c, true, true, false, true, true, true, false))
                                                                 .then(Commands.argument("check state", BoolArgumentType.bool())
-                                                                        .executes(c -> execute(c, 6)))))))));
+                                                                        .executes(c -> execute(c, true, true, false, true, true, true, true))))))
+                                )));
     }
 
-    private static int execute(CommandContext<CommandSourceStack> context, int feature) throws CommandSyntaxException {
+    private static int execute(CommandContext<CommandSourceStack> context,
+                               boolean offset,
+                               boolean rotation,
+                               boolean scale,
+                               boolean delay,
+                               boolean forceDeath,
+                               boolean allowMulti,
+                               boolean checkState) throws CommandSyntaxException {
         var command = new BlockEffectCommand();
         command.setLocation(ResourceLocationArgument.getId(context, "location"));
         command.setPos(BlockPosArgument.getLoadedBlockPos(context, "pos"));
-        if (feature >= 1) {
+        if (offset) {
             command.setOffset(Vec3Argument.getVec3(context, "offset"));
         }
-        if (feature >= 2) {
+        if (rotation) {
             command.setRotation(Vec3Argument.getVec3(context, "rotation"));
         }
-        if (feature >= 3) {
+        if (scale) {
+            command.setScale(Vec3Argument.getVec3(context, "scale"));
+        }
+        if (delay) {
             command.setDelay(IntegerArgumentType.getInteger(context, "delay"));
         }
-        if (feature >= 4) {
+        if (forceDeath) {
             command.setForcedDeath(BoolArgumentType.getBool(context, "force death"));
         }
-        if (feature >= 5) {
+        if (allowMulti) {
             command.setAllowMulti(BoolArgumentType.getBool(context, "allow multi"));
         }
-        if (feature >= 6) {
+        if (checkState) {
             command.setCheckState(BoolArgumentType.getBool(context, "check state"));
         }
         PhotonNetworking.NETWORK.sendToTrackingChunk(command, context.getSource().getLevel().getChunkAt(command.pos));
@@ -102,7 +123,8 @@ public class BlockEffectCommand extends EffectCommand {
             if (fx != null) {
                 var effect = new BlockEffect(fx, handler.getLevel(), pos);
                 effect.setOffset(offset.x, offset.y, offset.z);
-                effect.setRotation(rotation.x, offset.y, offset.z);
+                effect.setRotation(rotation.x, rotation.y, rotation.z);
+                effect.setScale(scale.x, scale.y, scale.z);
                 effect.setDelay(delay);
                 effect.setForcedDeath(forcedDeath);
                 effect.setAllowMulti(allowMulti);

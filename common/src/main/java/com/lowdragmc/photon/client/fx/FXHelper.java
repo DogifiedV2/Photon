@@ -1,6 +1,5 @@
 package com.lowdragmc.photon.client.fx;
 
-import com.lowdragmc.photon.client.emitter.IParticleEmitter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -11,9 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,26 +34,22 @@ public class FXHelper {
     public static FX getFX(ResourceLocation fxLocation) {
         return CACHE.computeIfAbsent(fxLocation, location -> {
             ResourceLocation resourceLocation = new ResourceLocation(fxLocation.getNamespace(), FX_PATH + fxLocation.getPath() + ".fx");
-            try (var inputStream = Minecraft.getInstance().getResourceManager().getResource(resourceLocation).getInputStream()) {
+            try (var inputStream = Minecraft.getInstance().getResourceManager().getResource(resourceLocation).getInputStream();) {
                 var tag = NbtIo.readCompressed(inputStream);
-                return new FX(fxLocation, getEmitters(tag), tag);
+                var version = tag.contains("_version") ? tag.getInt("_version") : 0;
+                var fx = new FX();
+                fx.setFxLocation(fxLocation);
+                fx.deserializeNBT(tag.getCompound("fx"));
+                if (version < 1) {
+                    var emitters = new CompoundTag();
+                    emitters.put("fxObjects", tag.getList("emitters", Tag.TAG_COMPOUND));
+                    fx.getMainFX().deserializeNBT(emitters);
+                }
+                return fx;
             } catch (Exception ignored) {
                 return null;
             }
         });
-    }
-
-    public static List<IParticleEmitter> getEmitters(CompoundTag tag) {
-        List<IParticleEmitter> emitters = new ArrayList<>();
-        for (var nbt : tag.getList("emitters", Tag.TAG_COMPOUND)) {
-            if (nbt instanceof CompoundTag data) {
-                var emitter = IParticleEmitter.deserializeWrapper(data);
-                if (emitter != null) {
-                    emitters.add(emitter);
-                }
-            }
-        }
-        return emitters;
     }
 
 }

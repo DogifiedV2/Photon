@@ -98,6 +98,8 @@ dependencies {
     modImplementation(forge.ldlib.forge) { transitive = false }
     include(forge.ldlib.forge)
 
+    implementation 'org.joml:joml:1.10.4'
+
     // Rubidium
     modImplementation(forge.rubidium) { transitive = false }
 }

@@ -22,10 +22,10 @@ Date: 2026-05-16
 - [x] LDLib 1.20 editor/UI dependencies identified.
 - [x] LDLib experimental artifact published to Maven local.
 - [x] Photon dependency switched to experimental LDLib artifact.
-- [ ] Photon 1.20 runtime/object model ported.
-- [ ] Photon 1.20 editor/UI ported.
-- [ ] Commands/save/load/runtime integration ported.
-- [ ] Rendering/mixins adapted to MC 1.18.2.
+- [x] Photon 1.20 runtime/object model ported to compile gate.
+- [x] Photon 1.20 editor/UI ported to compile gate.
+- [x] Commands/save/load/runtime integration ported to compile gate.
+- [x] Rendering/mixins adapted to MC 1.18.2 compile gate.
 - [x] Forge compile passes.
 - [ ] Forge dev client launches.
 - [ ] Editor opens.
@@ -55,9 +55,9 @@ Date: 2026-05-16
 2. Compile after each file group and fill any remaining LDLib bridge gaps surfaced by errors.
 3. Continue with Photon editor files once runtime/object classes compile.
 
-## Active WIP - Photon runtime/editor direct copy attempt
+## Previous WIP note - resolved by compile slice
 
-Uncommitted Photon WIP currently attempts the first direct Photon 1.20 runtime/editor file copy. It does **not** compile yet and must not be treated as a completed subphase.
+The earlier direct Photon 1.20 runtime/editor copy attempt now compiles through the common and Forge compile gates. Runtime/editor smoke testing is still pending.
 
 Files currently involved include:
 
@@ -72,7 +72,7 @@ Latest compile command:
 sh ./gradlew -Dorg.gradle.java.home="$(/usr/libexec/java_home -v 17)" :photon-common:compileJava --no-daemon --stacktrace
 ```
 
-Latest status: fails. Major remaining categories from `/tmp/photon-common-errors6.log`:
+Earlier failing categories now addressed enough for compile. Historical categories were:
 
 - `PhotonLDLibPlugin.REGISTER_FX_OBJECTS` registry not ported yet.
 - `FXProject` / `FX` / `IProject` API mismatch with current 1.18 LDLib and old Photon `FX` shape.
@@ -83,6 +83,19 @@ Latest status: fails. Major remaining categories from `/tmp/photon-common-errors
 
 Next implementation step:
 
-1. Port `PhotonLDLibPlugin` 1.20 registration maps and/or create compatibility registries for `IFXObject` and new shapes.
-2. Port/adapt LDLib widget helpers required by `FXObjectsList`, or simplify `FXObjectsList` to 1.18 widget APIs while preserving 1.20 behavior.
-3. Decide whether to fully replace old 1.18 editor/runtime classes now, instead of compiling both old and new systems together.
+1. Run `:photon-forge:runClient` and fix startup/mixin/resource crashes.
+2. Open the Photon editor and run the manual create/save/load/spawn smoke checklist in `VALIDATION.md`.
+3. Run and update the bug-triage checklist in `BUG_TRIAGE.md`, then fix or document confirmed issues.
+
+## Photon direct overlay slice - runtime/editor compiles
+
+- Replaced the old 1.18 editor/runtime implementation with the Photon 1.20.1 runtime/editor stack as the active experimental source shape.
+- Added/copied the 1.20 FX runtime model (`FXData`, `FXRuntime`, `FXProjectEffect`, `client/gameobject/**`) and the 1.20 editor UI (`FXEditor`, `FXProject`, `FXObjectsList`, `ParticleScenePanel`, updated resource/configurator classes).
+- Removed the old 1.18 emitter/editor classes from the active source tree to avoid keeping two incompatible editor/runtime systems.
+- Adapted 1.20 code to MC 1.18 APIs: `RandomSource -> java.util.Random`, `GuiGraphics -> PoseStack`, `Component.literal -> TextComponent`, `BlockPos.containing -> new BlockPos`, resource-manager file reads, entity rotation, `BufferUploader.end(...)`, Mojang/JOML matrix/vector conversions, and Forge mixin imports.
+- Kept 1.20 compute-shader trail smoothing safely disabled on 1.18; the LDLib bridge exposes compute/SSBO capability flags as false and Photon uses the non-compute path.
+- Validation passed on 2026-05-16:
+  - `:photon-common:compileJava`
+  - `:photon-forge:compileJava`
+  - `:photon-forge:dependencyInsight --dependency ldlib-forge --configuration modImplementation` resolved `com.lowdragmc.ldlib:ldlib-forge-1.18.2:1.0.26-120port.1`.
+- Remaining required gate: launch `:photon-forge:runClient`, verify mixins/startup, then open the editor and run the manual create/save/load/spawn smoke tests from `VALIDATION.md`.

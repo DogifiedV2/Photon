@@ -40,6 +40,8 @@ dependencies {
     modImplementation fabric.fabricLoader
 
     modCompileOnly fabric.ldlib.common
+
+    implementation 'org.joml:joml:1.10.4'
 }
 
 publishing {
