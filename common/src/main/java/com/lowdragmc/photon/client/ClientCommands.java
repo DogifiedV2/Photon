@@ -112,7 +112,7 @@ public class ClientCommands {
             minecraft.setScreen(gui);
             player.containerMenu = gui.getMenu();
             if (isAutoOpenEditorEnabled()) {
-                Photon.LOGGER.info("Photon dev auto-open harness creating smoke FX project with one particle emitter");
+                Photon.LOGGER.info("Photon dev auto-open harness creating smoke FX project");
                 editor.openDevSmokeParticleProject();
             }
             player.displayClientMessage(new TextComponent("Photon editor screen opened"), false);

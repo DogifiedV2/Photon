@@ -6,11 +6,15 @@ import com.lowdragmc.lowdraglib.gui.editor.ui.*;
 import com.lowdragmc.lowdraglib.gui.editor.ui.menu.ViewMenu;
 import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
 import com.lowdragmc.photon.client.fx.IEffect;
+import com.lowdragmc.photon.client.gameobject.IFXObject;
+import com.lowdragmc.photon.client.gameobject.emitter.beam.BeamEmitter;
 import com.lowdragmc.photon.client.gameobject.emitter.particle.ParticleEmitter;
+import com.lowdragmc.photon.client.gameobject.emitter.trail.TrailEmitter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @LDLRegister(name = "editor.fx", group = "editor")
@@ -63,23 +67,52 @@ public class FXEditor extends Editor {
      */
     public void openDevSmokeParticleProject() {
         var project = new FXProject().newEmptyProject();
-        var emitter = Boolean.getBoolean("photon.autoNoEmitter") ||
-                Boolean.parseBoolean(System.getenv().getOrDefault("PHOTON_AUTO_NO_EMITTER", "false")) ? null : new ParticleEmitter();
-        if (emitter != null) {
-            emitter.setName("particle");
-            project.getFx().getMainFX().objects().add(emitter);
-        }
+        var emitters = createDevSmokeEmitters();
+        project.getFx().getMainFX().objects().addAll(emitters);
 
         loadProject(project);
 
         if (!getTabPages().getTabGroups().isEmpty() && getTabPages().getTabGroups().get(0) instanceof ParticleScenePanel panel) {
             panel.onPanelSelected();
-            if (emitter != null && panel.getFxObjectsList() != null) {
-                panel.getFxObjectsList().setSelectedFX(emitter);
+            if (!emitters.isEmpty() && panel.getFxObjectsList() != null) {
+                panel.getFxObjectsList().setSelectedFX(emitters.get(0));
                 panel.getFxObjectsList().updateList();
             }
             panel.restartEmitters();
         }
+    }
+
+    private List<IFXObject> createDevSmokeEmitters() {
+        if (Boolean.getBoolean("photon.autoNoEmitter") ||
+                Boolean.parseBoolean(System.getenv().getOrDefault("PHOTON_AUTO_NO_EMITTER", "false"))) {
+            return List.of();
+        }
+        var requested = System.getProperty("photon.autoEmitters");
+        if (requested == null || requested.isBlank()) {
+            requested = System.getenv().getOrDefault("PHOTON_AUTO_EMITTERS", "particle");
+        }
+
+        var emitters = new ArrayList<IFXObject>();
+        for (var rawName : requested.split(",")) {
+            var name = rawName.trim().toLowerCase();
+            if (name.isEmpty()) continue;
+            IFXObject emitter = switch (name) {
+                case "beam" -> new BeamEmitter();
+                case "trail" -> new TrailEmitter();
+                case "particle", "particles" -> new ParticleEmitter();
+                default -> null;
+            };
+            if (emitter != null) {
+                emitter.setName(name.equals("particles") ? "particle" : name);
+                emitters.add(emitter);
+            }
+        }
+        if (emitters.isEmpty()) {
+            var fallback = new ParticleEmitter();
+            fallback.setName("particle");
+            emitters.add(fallback);
+        }
+        return emitters;
     }
 
 }

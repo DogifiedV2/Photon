@@ -28,7 +28,7 @@ Date: 2026-05-16
 - [x] Rendering/mixins adapted to MC 1.18.2 compile gate.
 - [x] Forge compile passes.
 - [x] Forge dev client launches.
-- [ ] Editor opens.
+- [x] Editor opens.
 - [ ] Basic create/save/load/spawn smoke passes.
 - [ ] Bug-triage checklist completed.
 
@@ -136,3 +136,30 @@ Next implementation step:
   - Photon `:photon-forge:compileJava`
   - Photon `:photon-forge:runClient` reached the client; latest startup log has no `Failed to load texture`, `FileNotFound`, or error lines before editor interaction.
 - Remaining required manual gate: open `/photon editor`, create/select a particle, and verify the preview wedge/resources/toggles visually. If the black preview wedge remains, next slice is a deeper BloomEffect/ParticleRenderType 1.18 fallback rather than more UI styling.
+
+
+## Automated editor smoke checkpoint - 2026-05-16 17:15
+
+- Committed checkpoints now present:
+  - Photon `9ad528f fix: make the Photon editor usable on 1.18`
+  - LDLib `0e70ca29 fix: restore visible editor controls in LDLib`
+  - LDLib `ea003193 fix: match modern float view panel styling`
+- Added/used the dev auto-open harness to launch a world, open the editor, create a new FX project, and create selected emitters without human clicks.
+- Harness can now create multiple emitter types with `PHOTON_AUTO_EMITTERS`, e.g. `PHOTON_AUTO_EMITTERS=particle,beam,trail`.
+- Validation passed after the latest changes:
+  - LDLib `:ldlib-forge:compileJava publishToMavenLocal -Pmod_version=1.0.26-120port.1`
+  - Photon `:photon-forge:compileJava --refresh-dependencies` after LDLib republish
+  - Photon `:photon-forge:compileJava` after the multi-emitter harness update
+  - Photon `:photon-forge:runClient` with `PHOTON_AUTO_OPEN_EDITOR=true PHOTON_AUTO_LOAD_WORLD='New World (1)' PHOTON_AUTO_EMITTERS='particle,beam,trail'`
+- Screenshot evidence:
+  - `/tmp/codex-screens/photon-after-floatview.png`: editor opens with 1.20-style dark panels, visible checkbox toggles, no `A` placeholders, no black preview wedge.
+  - `/tmp/codex-screens/photon-all-emitters.png`: smoke project contains `particle`, `beam`, and `trail`; particle/beam render in the preview; object list/config panel/resource panel remain visible.
+- Latest editor smoke log only showed expected local/offline auth noise plus macOS OpenGL unsupported warnings; no Photon/LDLib missing texture, shader, mixin, or runtime exception was found after editor open.
+- Resource usage note from code review: material resources are draggable onto the emitter `Material > preview` box (`MaterialSetting.preview` has an `IMaterial` drag consumer). Mesh/color/curve/gradient resources use the equivalent compatible preview/selector targets.
+
+Remaining gates:
+
+1. Exercise save/export dialog and verify exported `.fx` reloads through the resource manager.
+2. Smoke block/entity spawn and remove commands against an exported test effect.
+3. Review the render/bloom bridge changes for unnecessary risk now that the actual black-wedge fix is known.
+4. Keep the dev harness until final validation is done, then decide whether to leave it env-gated or remove it.
