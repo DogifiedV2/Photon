@@ -151,9 +151,10 @@ public class TrailConfig implements IPersistedSerializable {
                 BlendModeAccessor.setLastApplied(shader.getBlend());
             }
 
-            //bind MRT after material rendered
-            var input = BloomEffect.getInput();
-            input.bindWrite(false);
+            if (renderer.isBloomEffect()) {
+                var input = BloomEffect.getInput();
+                input.bindWrite(false);
+            }
 
             Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
         }

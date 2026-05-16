@@ -17,7 +17,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TextComponent;
+import org.lwjgl.glfw.GLFW;
 
+import java.io.File;
 import java.util.List;
 
 import static com.lowdragmc.lowdraglib.client.ClientCommands.createLiteral;
@@ -30,6 +32,64 @@ import static com.lowdragmc.lowdraglib.client.ClientCommands.createLiteral;
 @Environment(EnvType.CLIENT)
 public class ClientCommands {
     private static boolean pendingEditorOpen;
+    private static boolean autoWorldLoadAttempted;
+    private static boolean autoEditorOpenQueued;
+    private static boolean autoWindowResizeAttempted;
+    private static int autoOpenTicks;
+
+    private static boolean isAutoOpenEditorEnabled() {
+        return Boolean.getBoolean("photon.autoOpenEditor") ||
+                Boolean.parseBoolean(System.getenv().getOrDefault("PHOTON_AUTO_OPEN_EDITOR", "false"));
+    }
+
+    private static String getAutoLoadWorldName() {
+        var property = System.getProperty("photon.autoLoadWorld");
+        if (property != null && !property.isBlank()) {
+            return property;
+        }
+        var env = System.getenv("PHOTON_AUTO_LOAD_WORLD");
+        if (env != null && !env.isBlank()) {
+            return env;
+        }
+        return "New World";
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void runDevAutoOpenHarness() {
+        if (!isAutoOpenEditorEnabled() || autoEditorOpenQueued) return;
+
+        var minecraft = Minecraft.getInstance();
+        if (!autoWindowResizeAttempted && minecraft.getWindow() != null) {
+            autoWindowResizeAttempted = true;
+            var width = Integer.getInteger("photon.autoWindowWidth", 1600);
+            var height = Integer.getInteger("photon.autoWindowHeight", 900);
+            var x = Integer.getInteger("photon.autoWindowX", 40);
+            var y = Integer.getInteger("photon.autoWindowY", 80);
+            Photon.LOGGER.info("Photon dev auto-open harness moving window to {},{} and resizing to {}x{}", x, y, width, height);
+            minecraft.getWindow().setWindowed(width, height);
+            GLFW.glfwSetWindowPos(minecraft.getWindow().getWindow(), x, y);
+            minecraft.resizeDisplay();
+        }
+        if (minecraft.level == null || minecraft.player == null) {
+            if (!autoWorldLoadAttempted && ++autoOpenTicks > 40) {
+                autoWorldLoadAttempted = true;
+                var worldName = getAutoLoadWorldName();
+                File worldFolder = new File(new File(minecraft.gameDirectory, "saves"), worldName);
+                if (worldFolder.isDirectory()) {
+                    Photon.LOGGER.info("Photon dev auto-open harness loading singleplayer world '{}'", worldName);
+                    minecraft.loadLevel(worldName);
+                } else {
+                    Photon.LOGGER.warn("Photon dev auto-open harness could not load '{}': {} is not a directory",
+                            worldName, worldFolder.getAbsolutePath());
+                }
+            }
+            return;
+        }
+
+        autoEditorOpenQueued = true;
+        pendingEditorOpen = true;
+        Photon.LOGGER.info("Photon dev auto-open harness queued editor open");
+    }
 
     @Environment(EnvType.CLIENT)
     public static void openPendingEditor() {
@@ -45,11 +105,16 @@ public class ClientCommands {
             Photon.LOGGER.info("Opening Photon editor screen on client tick. previousScreen={} workspace={}",
                     minecraft.screen == null ? "null" : minecraft.screen.getClass().getName(),
                     LDLib.getLDLibDir().getAbsolutePath());
-            var modular = new ModularUI(IUIHolder.EMPTY, player).widget(new FXEditor(LDLib.getLDLibDir()));
+            var editor = new FXEditor(LDLib.getLDLibDir());
+            var modular = new ModularUI(IUIHolder.EMPTY, player).widget(editor);
             modular.initWidgets();
             ModularUIGuiContainer gui = new ModularUIGuiContainer(modular, player.containerMenu.containerId);
             minecraft.setScreen(gui);
             player.containerMenu = gui.getMenu();
+            if (isAutoOpenEditorEnabled()) {
+                Photon.LOGGER.info("Photon dev auto-open harness creating smoke FX project with one particle emitter");
+                editor.openDevSmokeParticleProject();
+            }
             player.displayClientMessage(new TextComponent("Photon editor screen opened"), false);
             Photon.LOGGER.info("Photon editor screen opened: currentScreen={}",
                     minecraft.screen == null ? "null" : minecraft.screen.getClass().getName());

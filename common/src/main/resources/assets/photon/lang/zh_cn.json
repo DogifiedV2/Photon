@@ -136,6 +136,8 @@
   "ldlib.gui.editor.register.editor.fx.fxproj": "特效项目",
   "ldlib.gui.editor.register.editor.fx.particle_info": "粒子信息",
   "photon.gui.editor.fx_info.restart": "重启",
+  "photon.gui.editor.fx_info.pause": "暂停",
+  "photon.gui.editor.fx_info.play": "播放",
   "photon.gui.editor.fx_info.particles": "粒子数",
   "photon.gui.editor.fx_info.time": "时间",
   "photon.gui.editor.fx_info.cpu_time": "CPU时间",

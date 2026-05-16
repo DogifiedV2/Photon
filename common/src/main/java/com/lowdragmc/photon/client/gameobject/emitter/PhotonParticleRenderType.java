@@ -142,6 +142,7 @@ public abstract class PhotonParticleRenderType implements ParticleRenderType {
      */
     public void endParticle() {
         BloomEffect.setBloomColor(new Vector4f(0.0f));
+        BloomEffect.endBloomRendering();
         var background = Minecraft.getInstance().getMainRenderTarget();
         background.bindWrite(false);
     }

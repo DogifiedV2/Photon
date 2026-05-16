@@ -6,6 +6,7 @@ import com.lowdragmc.lowdraglib.gui.editor.ui.*;
 import com.lowdragmc.lowdraglib.gui.editor.ui.menu.ViewMenu;
 import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
 import com.lowdragmc.photon.client.fx.IEffect;
+import com.lowdragmc.photon.client.gameobject.emitter.particle.ParticleEmitter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -52,6 +53,32 @@ public class FXEditor extends Editor {
             super.loadProject(project);
         } else {
             throw new IllegalArgumentException("Invalid project type");
+        }
+    }
+
+    /**
+     * Temporary developer smoke harness entry point.
+     * Creates the same visible state a human would make through:
+     * File -> new FX project -> FX Object List -> add emitter -> particle -> select emitter.
+     */
+    public void openDevSmokeParticleProject() {
+        var project = new FXProject().newEmptyProject();
+        var emitter = Boolean.getBoolean("photon.autoNoEmitter") ||
+                Boolean.parseBoolean(System.getenv().getOrDefault("PHOTON_AUTO_NO_EMITTER", "false")) ? null : new ParticleEmitter();
+        if (emitter != null) {
+            emitter.setName("particle");
+            project.getFx().getMainFX().objects().add(emitter);
+        }
+
+        loadProject(project);
+
+        if (!getTabPages().getTabGroups().isEmpty() && getTabPages().getTabGroups().get(0) instanceof ParticleScenePanel panel) {
+            panel.onPanelSelected();
+            if (emitter != null && panel.getFxObjectsList() != null) {
+                panel.getFxObjectsList().setSelectedFX(emitter);
+                panel.getFxObjectsList().updateList();
+            }
+            panel.restartEmitters();
         }
     }
 

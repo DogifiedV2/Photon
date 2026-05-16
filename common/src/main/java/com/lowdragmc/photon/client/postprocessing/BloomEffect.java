@@ -36,6 +36,7 @@ public class BloomEffect {
     private static int LAST_GUI_WIDTH, LAST_GUI_HEIGHT;
     private static RenderTarget INPUT, TRANSLUCENT_INPUT, GUI_INPUT, OUTPUT;
     private static RenderTarget SWAP2A, SWAP4A, SWAP8A, SWAP2B, SWAP4B, SWAP8B;
+    private static boolean BLOOM_RENDERING = false;
     //Add a standalone photon particle shader and generate bloom using MRT
     private static final ShaderInstance PARTICLE = loadShader("photon:particle", DefaultVertexFormat.PARTICLE);
     private static final ShaderInstance SEPARABLE_BLUR = loadShader("photon:separable_blur");
@@ -111,7 +112,12 @@ public class BloomEffect {
     }
 
     public static void bindBloomShader() {
+        BLOOM_RENDERING = true;
         RenderSystem.setShader(() -> PARTICLE);
+    }
+
+    public static boolean isBloomRendering() {
+        return BLOOM_RENDERING;
     }
 
     public static void setBloomColor(int color) {
@@ -128,6 +134,10 @@ public class BloomEffect {
         if (RenderSystem.getShader() != null) {
             RenderSystem.getShader().safeGetUniform("BloomColor").set(color.x, color.y, color.z, color.w);
         }
+    }
+
+    public static void endBloomRendering() {
+        BLOOM_RENDERING = false;
     }
 
     public static RenderTarget getOutput() {

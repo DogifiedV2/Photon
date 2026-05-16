@@ -1,5 +1,6 @@
 package com.lowdragmc.photon.client.gameobject.emitter.data.material;
 
+import com.lowdragmc.lowdraglib.client.shader.Shaders;
 import com.lowdragmc.lowdraglib.gui.editor.ColorPattern;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.Configurable;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.NumberRange;
@@ -69,13 +70,13 @@ public class TextureMaterial extends ShaderInstanceMaterial {
 
     @Override
     public ShaderInstance getShader() {
-        return BloomEffect.getParticleShader();
+        return BloomEffect.isBloomRendering() ? BloomEffect.getParticleShader() : Shaders.getParticleShader();
     }
 
     @Override
     public void setupUniform() {
         RenderSystem.setShaderTexture(0, texture);
-        BloomEffect.getParticleShader().safeGetUniform("DiscardThreshold").set(discardThreshold);
+        getShader().safeGetUniform("DiscardThreshold").set(discardThreshold);
     }
 
     @Override

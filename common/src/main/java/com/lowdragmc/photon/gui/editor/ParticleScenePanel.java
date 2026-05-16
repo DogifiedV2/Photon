@@ -61,7 +61,6 @@ public class ParticleScenePanel extends WidgetGroup {
         addWidget(scene = new ParticleScene(0, 0, this.getSize().width, this.getSize().height));
         scene.setRenderFacing(false);
         scene.setRenderSelect(false);
-        scene.useCacheBuffer();
         scene.createScene(level = new TrackedDummyWorld());
         scene.setAfterWorldRender(this::renderAfterWorld);
         this.effect = new FXProjectEffect(level);
@@ -107,6 +106,14 @@ public class ParticleScenePanel extends WidgetGroup {
     public void restartEmitters() {
         scene.getParticleManager().clearAllParticles();
         runtime.emmit(effect);
+    }
+
+    public boolean isPaused() {
+        return scene.getParticleManager().isPaused();
+    }
+
+    public void setPaused(boolean paused) {
+        scene.getParticleManager().setPaused(paused);
     }
 
     /**
@@ -166,7 +173,6 @@ public class ParticleScenePanel extends WidgetGroup {
 
     public void renderAfterWorld(SceneWidget _scene) {
         hoverSelected = false;
-        renderBox(new PoseStack(), new AABB(0, 0, 0, 0, 0, 0), 0, 0, 0);
         if (project.isDraggable() && fxObjectsList != null) {
             var selected = fxObjectsList.getSelected();
             if (selected != null) {
@@ -197,7 +203,7 @@ public class ParticleScenePanel extends WidgetGroup {
             var selected = fxObjectsList.getSelected();
             if (selected instanceof IParticleEmitter emitter) {
                 PoseStack poseStack = new PoseStack();
-                var aabb = emitter.getCullBox(Minecraft.getInstance().getFrameTime());
+                var aabb = emitter.getCullBox(scene.getParticleManager().getStablePartialTicks(Minecraft.getInstance().getFrameTime()));
                 if (aabb != null) {
                     renderBox(poseStack, aabb, 0.5f, 0.5f, 0.5f);
                 }
@@ -206,12 +212,14 @@ public class ParticleScenePanel extends WidgetGroup {
     }
 
     public static void renderBox(PoseStack poseStack, AABB aabb, float r, float g, float b) {
+        BufferUploader.reset();
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
         poseStack.pushPose();
 
         Tesselator tessellator = Tesselator.getInstance();
+        RenderSystem.disableTexture();
         BufferBuilder buffer = tessellator.getBuilder();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
@@ -220,6 +228,7 @@ public class ParticleScenePanel extends WidgetGroup {
 
         poseStack.popPose();
 
+        RenderSystem.enableTexture();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShaderColor(1, 1, 1, 1);
     }

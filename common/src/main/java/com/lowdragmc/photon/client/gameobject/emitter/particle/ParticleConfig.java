@@ -178,9 +178,13 @@ public class ParticleConfig implements IPersistedSerializable {
                 BlendModeAccessor.setLastApplied(shader.getBlend());
             }
 
-            //bind MRT after material rendered
-            var input = BloomEffect.getInput();
-            input.bindWrite(false);
+            if (renderer.isBloomEffect()) {
+                // Bind the bloom target only for bloom-enabled materials. The old 1.18 renderer
+                // rendered normal particles directly to the main target; binding the MRT target
+                // for non-bloom particles leaves the editor preview covered by the offscreen pass.
+                var input = BloomEffect.getInput();
+                input.bindWrite(false);
+            }
 
             Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
         }

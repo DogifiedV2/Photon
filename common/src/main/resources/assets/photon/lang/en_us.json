@@ -154,6 +154,8 @@
   "photon.emitter.trail.config.calculateSmoothByShader.0": "If you enable it, the smooth trail will be calculated by the compute shader. Enable it when you have a massive number of tails to be smooth.",
   "photon.emitter.trail.config.calculateSmoothByShader.1": "§eNOTE: §r it doesn't work with mac M-series chips.",
   "photon.gui.editor.fx_info.restart": "Restart",
+  "photon.gui.editor.fx_info.pause": "Pause",
+  "photon.gui.editor.fx_info.play": "Play",
   "photon.gui.editor.fx_info.particles": "Particles",
   "photon.gui.editor.fx_info.time": "Time",
   "photon.gui.editor.fx_info.cpu_time": "CPU Time",
