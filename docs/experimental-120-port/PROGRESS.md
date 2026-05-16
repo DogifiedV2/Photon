@@ -34,6 +34,7 @@ Date: 2026-05-16
 
 ## Latest notes
 
+- LDLib bridge slice 1 completed: configurator container/selector and layout enums were added, published to Maven local, and Photon compile still passes.
 - Created `docs/experimental-120-port/INVENTORY.md` with the Photon 1.20 -> LDLib 1.18 API gap list.
 - Created detached source worktrees for comparison:
   - Photon 1.20.1: `/tmp/photon-120` at `507499f` (`origin/1.20.1`)
