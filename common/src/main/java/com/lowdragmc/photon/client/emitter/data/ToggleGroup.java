@@ -1,7 +1,6 @@
 package com.lowdragmc.photon.client.emitter.data;
 
 import com.lowdragmc.lowdraglib.gui.editor.ColorPattern;
-import com.lowdragmc.lowdraglib.gui.editor.Icons;
 import com.lowdragmc.lowdraglib.gui.editor.configurator.ConfiguratorGroup;
 import com.lowdragmc.lowdraglib.gui.editor.configurator.IConfigurable;
 import com.lowdragmc.lowdraglib.gui.texture.ColorBorderTexture;
@@ -59,8 +58,8 @@ public class ToggleGroup implements IConfigurable {
         })
                 .setPressed(enable)
                 .setTexture(new GuiTextureGroup(new ColorRectTexture(0xff2f3439).setRadius(2), new ColorBorderTexture(-1, ColorPattern.LIGHT_GRAY.color).setRadius(2)),
-                        new GuiTextureGroup(new ColorRectTexture(0xff2f3439).setRadius(2), new ColorBorderTexture(-1, ColorPattern.GREEN.color).setRadius(2),
-                                Icons.CHECK.copy().setColor(ColorPattern.GREEN.color)))
+                        new GuiTextureGroup(new ColorRectTexture(0xff2f3439).setRadius(2), new ColorBorderTexture(-1, ColorPattern.LIGHT_GRAY.color).setRadius(2),
+                                new ColorRectTexture(ColorPattern.LIGHT_GRAY.color).setRadius(1).scale(0.58f)))
                 .setHoverTexture(new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(2), new ColorBorderTexture(-1, ColorPattern.WHITE.color).setRadius(2)))
                 .setHoverTooltips("enable/disable"));
     }

@@ -16,5 +16,5 @@ Code-side work is complete. Morning walkthrough checklist for the user:
 
 
 LDLib dependency note:
-- Photon is now pinned to the local Maven artifact version `1.0.26-ui-local.2`.
-- If more LDLib UI edits are made, republish from `/Users/rubenvancraenenbroeck/IdeaProjects/LDLib-MultiLoader` with `sh ./gradlew publishToMavenLocal -Pmod_version=1.0.26-ui-local.2 --no-daemon --stacktrace`, then rerun Photon.
+- Photon is now pinned to the local Maven artifact version `1.0.26-ui-local.3`.
+- If more LDLib UI edits are made, republish from `/Users/rubenvancraenenbroeck/IdeaProjects/LDLib-MultiLoader` with `sh ./gradlew publishToMavenLocal -Pmod_version=1.0.26-ui-local.3 --no-daemon --stacktrace`, then rerun Photon.

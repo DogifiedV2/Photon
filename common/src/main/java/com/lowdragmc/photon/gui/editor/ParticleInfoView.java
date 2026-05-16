@@ -134,8 +134,8 @@ public class ParticleInfoView extends FloatViewWidget {
         infoGroup.addWidget(new SwitchWidget(textWidth, -1, 12, 12, (cd, pressed) -> onClick.accept(pressed.booleanValue()))
                 .setSupplier(supplier::getAsBoolean).setPressed(supplier.getAsBoolean())
                 .setTexture(new GuiTextureGroup(new ColorRectTexture(0xff2f3439).setRadius(2), new ColorBorderTexture(-1, ColorPattern.LIGHT_GRAY.color).setRadius(2)),
-                        new GuiTextureGroup(new ColorRectTexture(0xff2f3439).setRadius(2), new ColorBorderTexture(-1, ColorPattern.GREEN.color).setRadius(2),
-                                Icons.CHECK.copy().setColor(ColorPattern.GREEN.color)))
+                        new GuiTextureGroup(new ColorRectTexture(0xff2f3439).setRadius(2), new ColorBorderTexture(-1, ColorPattern.LIGHT_GRAY.color).setRadius(2),
+                                new ColorRectTexture(ColorPattern.LIGHT_GRAY.color).setRadius(1).scale(0.58f)))
                 .setHoverTexture(new GuiTextureGroup(new ColorRectTexture(0xff3c4146).setRadius(2), new ColorBorderTexture(-1, ColorPattern.WHITE.color).setRadius(2))));
         content.addWidget(infoGroup);
         return infoGroup;

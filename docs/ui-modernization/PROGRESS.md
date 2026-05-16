@@ -135,7 +135,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 
 ## Local LDLib jar wiring
 
-- Published LDLib-MultiLoader to Maven local as `com.lowdragmc.ldlib:ldlib-forge-1.18.2:1.0.26-ui-local.2` using `sh ./gradlew publishToMavenLocal -Pmod_version=1.0.26-ui-local.2 --no-daemon --stacktrace`.
-- Updated Photon `settings.gradle` so the LDLib version catalog points at `1.0.26-ui-local.2` instead of the remote `1.0.26`.
+- Published LDLib-MultiLoader to Maven local as `com.lowdragmc.ldlib:ldlib-forge-1.18.2:1.0.26-ui-local.3` using `sh ./gradlew publishToMavenLocal -Pmod_version=1.0.26-ui-local.3 --no-daemon --stacktrace`.
+- Updated Photon `settings.gradle` so the LDLib version catalog points at `1.0.26-ui-local.3` instead of the remote `1.0.26`.
 - Verified Photon resolves the local jar with `sh ./gradlew :photon-forge:dependencyInsight --dependency ldlib-forge --configuration modImplementation --no-daemon`.
 - Re-ran `sh ./gradlew compileJava --no-daemon --stacktrace` in Photon after the dependency switch; it passed.
