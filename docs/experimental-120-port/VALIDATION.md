@@ -69,3 +69,31 @@ In a dev world:
 - [ ] No invisible editor panels/buttons/toggles in the main workflow.
 - [ ] Particle, beam, and trail render in preview.
 - [ ] Particle, beam, and trail render in-world.
+
+## 2026-05-16 resource/framebuffer triage validation
+
+Commands run after the LDLib icon-resource fix and Photon GUI framebuffer bridge:
+
+```bash
+cd /Users/rubenvancraenenbroeck/IdeaProjects/LDLib-MultiLoader
+sh ./gradlew -Dorg.gradle.java.home="$(/usr/libexec/java_home -v 17)" :ldlib-forge:compileJava publishToMavenLocal -Pmod_version=1.0.26-120port.1 --no-daemon --stacktrace
+
+cd /Users/rubenvancraenenbroeck/IdeaProjects/Photon
+sh ./gradlew -Dorg.gradle.java.home="$(/usr/libexec/java_home -v 17)" :photon-forge:compileJava --no-daemon --stacktrace
+sh ./gradlew -Dorg.gradle.java.home="$(/usr/libexec/java_home -v 17)" :photon-forge:runClient --no-daemon --stacktrace
+```
+
+Results:
+
+- LDLib compile/publish passed.
+- Photon Forge compile passed.
+- Photon Forge runClient reached the client.
+- `forge/run/logs/latest.log` after startup contained no `Failed to load texture`, `FileNotFound`, `Exception`, or `ERROR` lines except the normal Realms auth info line before editor interaction.
+
+Manual visual checks still required in the launched client:
+
+- `/photon editor` opens.
+- Resource thumbnail magenta/black missing-texture corners are gone.
+- The large black editor-preview wedge is gone.
+- Boolean toggles are visible/clickable in both off and on states.
+- Particle Information controls are readable and include the expected pause/restart behavior.

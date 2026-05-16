@@ -124,3 +124,15 @@ Next implementation step:
 - Merged missing Photon 1.20 language keys into `en_us.json` and `zh_cn.json` to reduce raw translation-key labels in the editor.
 - Validation passed on 2026-05-16: Photon lang/shader JSON parse check and `:photon-forge:compileJava`.
 - Remaining required gate: rerun client and click New Project again; if it no longer crashes, continue particle/beam/trail creation and save/load/spawn smoke tests.
+
+## Resource-icon and GUI framebuffer triage checkpoint
+
+- Investigated the latest broken-editor screenshot and `forge/run/logs/latest.log`.
+- Found concrete LDLib resource issue: `Failed to load texture: ldlib:textures/gui/icon/local.png`, matching the magenta/black corners in the bottom resource panel.
+- Fixed and republished LDLib with missing 1.20 GUI icon resources (`local`, `global`, checkbox/radiobox, transform mode icons) and matching `Icons` constants.
+- Ported Photon Forge's 1.20 GUI-render framebuffer state bridge to 1.18 Forge stages: set GUI mode after `RenderLevelStageEvent.Stage.AFTER_WEATHER`, reset after `AFTER_SKY`. This addresses the likely cause of 1.20 MRT/bloom rendering treating the editor preview as world rendering.
+- Validation passed on 2026-05-16:
+  - LDLib `:ldlib-forge:compileJava publishToMavenLocal -Pmod_version=1.0.26-120port.1`
+  - Photon `:photon-forge:compileJava`
+  - Photon `:photon-forge:runClient` reached the client; latest startup log has no `Failed to load texture`, `FileNotFound`, or error lines before editor interaction.
+- Remaining required manual gate: open `/photon editor`, create/select a particle, and verify the preview wedge/resources/toggles visually. If the black preview wedge remains, next slice is a deeper BloomEffect/ParticleRenderType 1.18 fallback rather than more UI styling.
