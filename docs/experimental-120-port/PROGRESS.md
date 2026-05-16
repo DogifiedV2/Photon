@@ -54,3 +54,35 @@ Date: 2026-05-16
 1. Start Photon 1.20 runtime/object model port, adding Photon-side JOML dependency as needed.
 2. Compile after each file group and fill any remaining LDLib bridge gaps surfaced by errors.
 3. Continue with Photon editor files once runtime/object classes compile.
+
+## Active WIP - Photon runtime/editor direct copy attempt
+
+Uncommitted Photon WIP currently attempts the first direct Photon 1.20 runtime/editor file copy. It does **not** compile yet and must not be treated as a completed subphase.
+
+Files currently involved include:
+
+- Photon-side JOML dependency additions in `common/build.gradle` and `forge/build.gradle`.
+- New/copied 1.20 runtime classes under `client/fx/**` and `client/gameobject/**`.
+- New/copied 1.20 editor classes: `FXEditor`, `FXProject`, `FXObjectsList`, `ParticleScene`, `ParticleScenePanel`, `ParticleInfoView`, `SceneMenu`.
+- 1.18 compatibility stubs/adaptations started for `IrisFramebufferUtils`, `RandomSource -> java.util.Random`, and `GuiGraphics -> PoseStack`.
+
+Latest compile command:
+
+```bash
+sh ./gradlew -Dorg.gradle.java.home="$(/usr/libexec/java_home -v 17)" :photon-common:compileJava --no-daemon --stacktrace
+```
+
+Latest status: fails. Major remaining categories from `/tmp/photon-common-errors6.log`:
+
+- `PhotonLDLibPlugin.REGISTER_FX_OBJECTS` registry not ported yet.
+- `FXProject` / `FX` / `IProject` API mismatch with current 1.18 LDLib and old Photon `FX` shape.
+- `FXObjectsList` needs more LDLib 1.20 widget APIs (`TextTextureWidget`, dynamic sizing/layout helpers) or local adaptation.
+- Old 1.18 editor classes (`ParticleEditor`, `EmittersList`) now conflict with new `ParticleScene` / `ParticleInfoView`; likely remove/replace old editor path after new editor wiring is ready.
+- Render path mismatches: `BloomEffect`, framebuffer helpers, `BufferUploader` signatures, `PhotonShaders` compute shader support, JOML vs Mojang `Matrix4f` / `Vector3f` conversions.
+- Remaining MC 1.20 API usages need 1.18 equivalents: `Component.literal`, `BlockPos.containing`, `Vec3.toVector3f`, entity visual rotation helpers, resource manager `open`.
+
+Next implementation step:
+
+1. Port `PhotonLDLibPlugin` 1.20 registration maps and/or create compatibility registries for `IFXObject` and new shapes.
+2. Port/adapt LDLib widget helpers required by `FXObjectsList`, or simplify `FXObjectsList` to 1.18 widget APIs while preserving 1.20 behavior.
+3. Decide whether to fully replace old 1.18 editor/runtime classes now, instead of compiling both old and new systems together.
