@@ -2,7 +2,7 @@
 
 ## Current status
 
-Phase 5 scrolling/list containment polish is complete in LDLib-MultiLoader. Next work is Phase 6: editor shell layout polish for the top/side/bottom panels.
+Phase 6 editor shell layout polish is complete in LDLib-MultiLoader. Next work is Phase 7: Photon-specific editor polish for particle info, emitter list, and number-function controls.
 
 ## Baseline evidence
 
@@ -58,7 +58,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - [x] Phase 3: Configurator usability.
 - [x] Phase 4: Input/hitbox/GUI-scale correctness.
 - [x] Phase 5: Scrolling/clipping/containment.
-- [ ] Phase 6: Editor shell layout polish.
+- [x] Phase 6: Editor shell layout polish.
 - [ ] Phase 7: Photon-specific polish.
 - [ ] Phase 8: Safe modern nice-to-haves.
 - [ ] Phase 9: Final regression/review/handoff.
@@ -71,6 +71,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - LDLib-MultiLoader `43a7a739` - `style: improve editor configurator controls`
 - LDLib-MultiLoader `003b38dc` - `fix: correct editor dialog and scroll hit bounds`
 - LDLib-MultiLoader `2d7d6b7e` - `style: polish editor scrollable lists`
+- LDLib-MultiLoader `1a3a9ce5` - `style: polish editor shell tabs`
 
 ## Validation log
 
@@ -79,6 +80,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - Phase 3: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
 - Phase 4: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
 - Phase 5: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
+- Phase 6: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
 
 ## Phase 3 notes
 
@@ -98,3 +100,9 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - Added stronger backgrounds and visible scrollbars to resource containers, widget toolbox lists, and selector popups.
 - Added resource/tool item cards with hover and selected borders to reduce invisible/ambiguous list hits.
 - Kept changes inside editor/list presentation; data/resource behavior was not changed.
+
+## Phase 6 notes
+
+- Added stronger top menu/header framing and hoverable menu tab surfaces.
+- Added clearer bottom resource tab surfaces.
+- Kept changes in persistent editor shell presentation only.
