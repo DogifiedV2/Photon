@@ -19,7 +19,7 @@ Date: 2026-05-16
 - [x] Photon plan docs created.
 - [x] LDLib source comparison worktree created.
 - [x] Photon source comparison worktree created.
-- [ ] LDLib 1.20 editor/UI dependencies identified.
+- [x] LDLib 1.20 editor/UI dependencies identified.
 - [x] LDLib experimental artifact published to Maven local.
 - [x] Photon dependency switched to experimental LDLib artifact.
 - [ ] Photon 1.20 runtime/object model ported.
@@ -34,6 +34,7 @@ Date: 2026-05-16
 
 ## Latest notes
 
+- Created `docs/experimental-120-port/INVENTORY.md` with the Photon 1.20 -> LDLib 1.18 API gap list.
 - Created detached source worktrees for comparison:
   - Photon 1.20.1: `/tmp/photon-120` at `507499f` (`origin/1.20.1`)
   - LDLib 1.20.1: `/tmp/ldlib-120` at `5d68947b` (`origin/1.20.1`)
@@ -47,6 +48,6 @@ Date: 2026-05-16
 
 ## Next action
 
-1. Inventory exact Photon 1.20 classes that depend on LDLib 1.20 editor/UI APIs.
-2. Start LDLib bridge work with the missing scene editor/object tree/configurator APIs needed by Photon 1.20.
-3. Republish LDLib after each successful bridge slice, then continue Photon runtime/editor porting.
+1. Start LDLib bridge work with the missing scene editor/object tree/configurator APIs in `INVENTORY.md`.
+2. Republish LDLib after each successful bridge slice.
+3. Begin Photon runtime/editor file port once the required LDLib bridge APIs compile.
