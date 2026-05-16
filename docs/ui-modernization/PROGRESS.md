@@ -2,7 +2,7 @@
 
 ## Current status
 
-Phase 6 editor shell layout polish is complete in LDLib-MultiLoader. Next work is Phase 7: Photon-specific editor polish for particle info, emitter list, and number-function controls.
+Phase 7 Photon-specific editor polish is complete. Next work is Phase 8: safe modern nice-to-haves and final small usability improvements.
 
 ## Baseline evidence
 
@@ -59,7 +59,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - [x] Phase 4: Input/hitbox/GUI-scale correctness.
 - [x] Phase 5: Scrolling/clipping/containment.
 - [x] Phase 6: Editor shell layout polish.
-- [ ] Phase 7: Photon-specific polish.
+- [x] Phase 7: Photon-specific polish.
 - [ ] Phase 8: Safe modern nice-to-haves.
 - [ ] Phase 9: Final regression/review/handoff.
 
@@ -72,6 +72,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - LDLib-MultiLoader `003b38dc` - `fix: correct editor dialog and scroll hit bounds`
 - LDLib-MultiLoader `2d7d6b7e` - `style: polish editor scrollable lists`
 - LDLib-MultiLoader `1a3a9ce5` - `style: polish editor shell tabs`
+- Photon `f81f0d5` - `style: polish photon editor panels`
 
 ## Validation log
 
@@ -81,6 +82,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - Phase 4: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
 - Phase 5: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
 - Phase 6: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed.
+- Phase 7: `sh ./gradlew compileJava --no-daemon --stacktrace` in Photon passed.
 
 ## Phase 3 notes
 
@@ -106,3 +108,10 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 - Added stronger top menu/header framing and hoverable menu tab surfaces.
 - Added clearer bottom resource tab surfaces.
 - Kept changes in persistent editor shell presentation only.
+
+## Phase 7 notes
+
+- Strengthened Particle Information view content, buttons, toggles, and information rows.
+- Added visible cards, hover state, selected borders, and scrollbar track styling for the Photon emitter list.
+- Made number-function dropdown buttons more visible and opened their menus next to the button instead of far to the right.
+- No particle runtime or emitter simulation logic was changed.
