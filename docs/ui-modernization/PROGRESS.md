@@ -2,7 +2,7 @@
 
 ## Current status
 
-Initialized tracker before implementation.
+Phase 1 source/baseline audit is complete. Next work is Phase 2 in LDLib-MultiLoader: add a stronger shared visual foundation so panels, dialogs, menus, and scroll areas stop rendering as floating text over the world.
 
 ## Baseline evidence
 
@@ -16,10 +16,44 @@ Screenshots in `/Users/rubenvancraenenbroeck/Downloads` from `2026-05-16 03:13-0
 - rough resource tab/item styling,
 - menus/dropdowns needing stronger contrast and spacing.
 
+## Phase 1 audit findings
+
+### Main root causes
+
+1. `ConfigPanel` and its scroll groups do not paint a strong main panel/card background, so configurator text and values visually float over the 3D scene.
+2. Most configurator rows rely on very transparent `T_BLACK`/`T_GRAY` textures, tiny 10-15px controls, and no shared row surface/hover state.
+3. Menus, dialogs, float views, and selector popups use inconsistent or weak panel surfaces, making buttons and modal content hard to distinguish.
+4. Some editor controls are visually too small/cramped after the 1.18.2 port, especially number-function selectors and vector/range configurators.
+5. Potential correctness issues were found for later phases: dialog overflow adjustment direction, scroll child visibility handling, raw scissor usage in `DraggableScrollableWidgetGroup.drawOverlay`, and child hit-area behavior in `WidgetGroup`.
+
+### Primary LDLib target files
+
+- `common/src/main/java/com/lowdragmc/lowdraglib/gui/editor/ColorPattern.java`
+- `common/src/main/java/com/lowdragmc/lowdraglib/gui/editor/ui/ConfigPanel.java`
+- `common/src/main/java/com/lowdragmc/lowdraglib/gui/editor/ui/ToolPanel.java`
+- `common/src/main/java/com/lowdragmc/lowdraglib/gui/editor/ui/ResourcePanel.java`
+- `common/src/main/java/com/lowdragmc/lowdraglib/gui/editor/ui/MenuPanel.java`
+- `common/src/main/java/com/lowdragmc/lowdraglib/gui/editor/ui/view/FloatViewWidget.java`
+- `common/src/main/java/com/lowdragmc/lowdraglib/gui/editor/ui/Editor.java`
+- `common/src/main/java/com/lowdragmc/lowdraglib/gui/editor/configurator/*.java`
+- `common/src/main/java/com/lowdragmc/lowdraglib/gui/widget/{DialogWidget,MenuWidget,WidgetGroup,DraggableScrollableWidgetGroup}.java`
+
+### Primary Photon target files
+
+- `common/src/main/java/com/lowdragmc/photon/gui/editor/ParticleEditor.java`
+- `common/src/main/java/com/lowdragmc/photon/gui/editor/ParticleInfoView.java`
+- `common/src/main/java/com/lowdragmc/photon/gui/editor/EmittersList.java`
+- `common/src/main/java/com/lowdragmc/photon/gui/editor/configurator/NumberFunctionConfigurator.java`
+- `common/src/main/java/com/lowdragmc/photon/gui/editor/configurator/NumberFunction3Configurator.java`
+
+### Reference use
+
+Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visual and interaction inspiration. Do not backport their architecture or runtime systems.
+
 ## Completed phases
 
 - [x] Phase 0: Tracker setup started.
-- [ ] Phase 1: Baseline audit.
+- [x] Phase 1: Baseline audit.
 - [ ] Phase 2: LDLib visual foundation.
 - [ ] Phase 3: Configurator usability.
 - [ ] Phase 4: Input/hitbox/GUI-scale correctness.
@@ -31,8 +65,9 @@ Screenshots in `/Users/rubenvancraenenbroeck/Downloads` from `2026-05-16 03:13-0
 
 ## Commits
 
-- Pending.
+- Photon `b1629c4` - `docs: add photon editor ui modernization plan`
+- Pending: Phase 1 audit tracker update commit.
 
 ## Validation log
 
-- Pending.
+- Phase 1: source audit only; no runtime changes.
