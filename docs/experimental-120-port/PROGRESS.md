@@ -34,6 +34,7 @@ Date: 2026-05-16
 
 ## Latest notes
 
+- LDLib bridge slice 3 completed: minimal `ShaderSSBO` was added/published for 1.20 trail particle compile support.
 - LDLib bridge slice 2 completed: JOML, scene object/transform bridge classes, and SceneWidget compatibility helpers were added, published to Maven local, and Photon compile still passes.
 - LDLib bridge slice 1 completed: configurator container/selector and layout enums were added, published to Maven local, and Photon compile still passes.
 - Created `docs/experimental-120-port/INVENTORY.md` with the Photon 1.20 -> LDLib 1.18 API gap list.

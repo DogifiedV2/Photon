@@ -68,3 +68,5 @@ sh ./gradlew -Dorg.gradle.java.home="$(/usr/libexec/java_home -v 17)" publishToM
 - `4a2759c5` recorded the initial Photon-required LDLib API inventory.
 - `c1e637d3` added `IConfiguratorContainer`, `ConfiguratorSelectorConfigurator`, `Layout`, `Align`, and dynamic selector candidates; LDLib compile/publish passed on 2026-05-16.
 - Current LDLib bridge slice added JOML, scene object/transform bridge classes, and SceneWidget compatibility helpers; LDLib compile/publish and Photon compile passed on 2026-05-16.
+
+- LDLib commit `20e772b7` added a minimal `ShaderSSBO` bridge required by Photon 1.20 trail particles; LDLib compile/publish passed on 2026-05-16.
