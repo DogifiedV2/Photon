@@ -2,7 +2,7 @@
 
 ## Current status
 
-Phase 1 source/baseline audit is complete. Next work is Phase 2 in LDLib-MultiLoader: add a stronger shared visual foundation so panels, dialogs, menus, and scroll areas stop rendering as floating text over the world.
+Phase 2 visual foundation is complete in LDLib-MultiLoader. Next work is Phase 3: make individual configurator rows and small controls easier to read and click without changing particle behavior.
 
 ## Baseline evidence
 
@@ -54,7 +54,7 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 
 - [x] Phase 0: Tracker setup started.
 - [x] Phase 1: Baseline audit.
-- [ ] Phase 2: LDLib visual foundation.
+- [x] Phase 2: LDLib visual foundation.
 - [ ] Phase 3: Configurator usability.
 - [ ] Phase 4: Input/hitbox/GUI-scale correctness.
 - [ ] Phase 5: Scrolling/clipping/containment.
@@ -66,8 +66,10 @@ Use Photon `1.21`, LDLib-MultiLoader `1.21-ui-refactor`, and LDLib2 only as visu
 ## Commits
 
 - Photon `b1629c4` - `docs: add photon editor ui modernization plan`
-- Pending: Phase 1 audit tracker update commit.
+- Photon `68167bd` - `docs: record editor ui baseline audit`
+- LDLib-MultiLoader `b905b74f` - `style: strengthen editor ui surfaces`
 
 ## Validation log
 
 - Phase 1: source audit only; no runtime changes.
+- Phase 2: `sh ./gradlew compileJava --no-daemon --stacktrace` in LDLib-MultiLoader passed. Root `./gradlew` is not executable in this repo, so the validation used `sh ./gradlew`.
