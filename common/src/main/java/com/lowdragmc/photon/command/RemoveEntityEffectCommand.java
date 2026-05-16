@@ -63,6 +63,7 @@ public class RemoveEntityEffectCommand implements IPacket {
         for (Entity entity : entities) {
             buf.writeVarInt(entity.getId());
         }
+        buf.writeBoolean(force);
         buf.writeBoolean(location != null);
         if (location != null) {
             buf.writeResourceLocation(location);
@@ -75,6 +76,7 @@ public class RemoveEntityEffectCommand implements IPacket {
         for (int i = 0; i < ids.length; i++) {
             ids[i] = buf.readVarInt();
         }
+        force = buf.readBoolean();
         if (buf.readBoolean()) {
             location = buf.readResourceLocation();
         }

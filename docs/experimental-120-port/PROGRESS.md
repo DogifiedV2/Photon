@@ -160,8 +160,7 @@ Next implementation step:
 Remaining gates:
 
 1. Review the render/bloom bridge changes for unnecessary risk now that the actual black-wedge fix is known.
-2. Run a focused remove-command smoke or code review for remove packet paths.
-3. Keep the dev harness until final validation is done, then decide whether to leave it env-gated or remove it.
+2. Keep the dev harness until final validation is done, then decide whether to leave it env-gated or remove it.
 
 
 ## Export/reload/spawn smoke checkpoint - 2026-05-16 17:33
@@ -181,3 +180,12 @@ Remaining gates:
   - Exported file exists: `forge/run/ldlib/assets/photon/fx/codex_smoke.fx`.
   - Screenshot: `/tmp/codex-screens/photon-export-spawn-smoke.png`.
 - Note: the smoke harness resource reload can visually clear/reset parts of the open configurator panel; this path is env-gated and is only for validation. Normal editor open/use is unaffected.
+
+
+## Remove-command packet review - 2026-05-16
+
+- Reviewed block/entity remove packet encode/decode paths while closing the command/runtime smoke checklist.
+- Block remove already encoded `force` and optional `location`.
+- Entity remove did not encode/decode `force`, so `/photon fx remove entity <entities> true` would behave like non-forced removal on the client.
+- Fixed `RemoveEntityEffectCommand` to send/read `force` before the optional location flag.
+- Validation: Photon `:photon-forge:compileJava` passed.
